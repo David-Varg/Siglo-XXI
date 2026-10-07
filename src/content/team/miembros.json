@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "name": "David Vargas",
+    "role": "Lead Team / Desarrollo Frontend",
+    "badge": "Lead Team",
+    "avatar": "/David.webp",
+    "github": "https://github.com/David-Varg",
+    "twitter": "https://x.com/hi_alucin"
+  },
+  {
+    "id": 2,
+    "name": "Helmuth Ramirez",
+    "role": "Diseño & Redacción de Contenido",
+    "badge": "Contenido",
+    "avatar": "/Helmuth.webp",
+    "github": "https://github.com/HelmuthRamirez"
+  },
+  {
+    "id": 3,
+    "name": "Tomas Bautista",
+    "role": "Investigación & Documentación",
+    "badge": "Investigación",
+    "avatar": "/Tomas.webp",
+    "github": "#",
+    "threads": "https://www.threads.com/@_tomif8"
+  },
+  {
+    "id": 4,
+    "name": "Anderson Medina",
+    "role": "Diseño UI",
+    "badge": "Diseño",
+    "avatar": "/Anderson.webp",
+    "github": "#"
+  }
+]
