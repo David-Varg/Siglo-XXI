@@ -1,0 +1,170 @@
+<div
+  id="hero-canvas-container"
+  class="absolute inset-0 -z-10 h-full w-full overflow-hidden pointer-events-none"
+>
+  <canvas id="hero-canvas" class="h-full w-full block"></canvas>
+</div>
+
+<script>
+  import * as THREE from "three";
+  import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+  import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+
+  let animationFrameId: number;
+  let onMouseMove: (e: MouseEvent) => void;
+  let onResize: () => void;
+
+  const initScene = () => {
+    const container = document.getElementById("hero-canvas-container");
+    const canvas = document.getElementById("hero-canvas") as HTMLCanvasElement;
+    if (!container || !canvas) return;
+
+    if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    if (onMouseMove) window.removeEventListener("mousemove", onMouseMove);
+    if (onResize) window.removeEventListener("resize", onResize);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      70,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000,
+    );
+    camera.position.set(0, 0, 5);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const ambientLight = new THREE.AmbientLight(0x020617, 1.2);
+    scene.add(ambientLight);
+
+    const sunLight = new THREE.DirectionalLight(0xfba120, 4.5);
+    sunLight.position.set(6, 4, -2);
+    scene.add(sunLight);
+
+    const fillLight = new THREE.DirectionalLight(0x38bdf8, 2.0);
+    fillLight.position.set(-5, -3, 3);
+    scene.add(fillLight);
+
+    const rimLight = new THREE.DirectionalLight(0xa855f7, 3.5);
+    rimLight.position.set(0, -6, -4);
+    scene.add(rimLight);
+
+    let voyager: THREE.Group | null = null;
+    const loader = new GLTFLoader();
+    const dracoLoader = new DRACOLoader();
+
+    dracoLoader.setDecoderPath(
+      "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
+    );
+    loader.setDRACOLoader(dracoLoader);
+
+    loader.load(
+      "/models/voyager.glb",
+      (gltf) => {
+        voyager = gltf.scene;
+
+        const box = new THREE.Box3().setFromObject(voyager);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+
+        voyager.position.sub(center);
+
+        const maxDim = Math.max(size.x, size.y, size.z);
+        if (maxDim > 0) {
+          const targetScale = 4 / maxDim;
+          voyager.scale.set(targetScale, targetScale, targetScale);
+        }
+
+        voyager.traverse((child) => {
+          if ((child as THREE.Mesh).isMesh) {
+            const mesh = child as THREE.Mesh;
+            mesh.material.side = THREE.DoubleSide;
+          }
+        });
+
+        voyager.position.set(0, 1, 0);
+        voyager.rotation.set(0.4, -0.6, 0.2);
+        scene.add(voyager);
+
+        renderer.render(scene, camera);
+
+        window.dispatchEvent(new CustomEvent("hero:3d-ready"));
+      },
+      undefined,
+      (error) => {
+        console.error("Error al cargar el archivo GLTF:", error);
+        window.dispatchEvent(new CustomEvent("hero:3d-ready"));
+      },
+    );
+
+    const count = 350;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+
+    for (let i = 0; i < count * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 15;
+      positions[i + 1] = (Math.random() - 0.5) * 15;
+      positions[i + 2] = (Math.random() - 0.5) * 10;
+    }
+
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+    const material = new THREE.PointsMaterial({
+      size: 0.035,
+      color: 0x38bdf8,
+      transparent: true,
+      opacity: 0.6,
+      blending: THREE.AdditiveBlending,
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    let mouseX = 0;
+    let mouseY = 0;
+
+    onMouseMove = (e: MouseEvent) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 0.4;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 0.4;
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+
+      particles.rotation.y += 0.0008;
+      particles.rotation.x += 0.0003;
+
+      if (voyager) {
+        voyager.rotation.y += 0.0015;
+        voyager.rotation.z += 0.0005;
+
+        voyager.position.x += (mouseX * 0.8 - voyager.position.x) * 0.02;
+        voyager.position.y += (-mouseY * 0.8 - 0.5 - voyager.position.y) * 0.02;
+      }
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    onResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+
+    window.addEventListener("resize", onResize);
+  };
+
+  initScene();
+  document.addEventListener("astro:page-load", initScene);
+</script>

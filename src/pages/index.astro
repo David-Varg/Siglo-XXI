@@ -1,17 +1,71 @@
 ---
+import { getCollection } from "astro:content";
 
+// Componentes del Hero y Visuales
+import Hero from "@components/hero/Hero.astro";
+import Loader from "@components/Loader.astro";
+import HeroCanvas from "@components/hero/HeroCanvas.astro";
+
+// Componentes del Timeline y Búsqueda
+import DoubleTrackTimeline from "@components/hero/timeline/DoubleTrackTimeline.astro";
+import { SearchBar } from "@components/hero/navbar/SearchBar";
+
+// Componente del Equipo
+import Cards from "@components/Team/Cards.astro";
+
+// Layout
+import Layout from "@layouts/Layout.astro";
+
+const posts = await getCollection("hitos");
+
+const timelineItems = posts
+  .map((post) => ({
+    id: post.id,
+    title: post.data.title,
+    year: post.data.year,
+    category: post.data.category,
+    description: post.data.description,
+    image: post.data.image,
+  }))
+  .sort((a, b) => a.year - b.year);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Siglo XXI">
+  <Loader />
+
+  <main class="relative z-20 w-full overflow-x-hidden bg-zinc-950 text-white">
+    <section class="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4">
+      <HeroCanvas />
+
+      <Hero />
+
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-linear-to-b from-transparent via-zinc-950/80 to-zinc-950"
+      ></div>
+    </section>
+
+    <section
+      id="section-timeline"
+      class="relative flex min-h-screen w-full flex-col items-center justify-start px-4 py-20 bg-zinc-950"
+    >
+      <div class="z-30 w-full max-w-xl mb-12">
+        <SearchBar client:load items={timelineItems} />
+      </div>
+
+      <DoubleTrackTimeline items={timelineItems} />
+    </section>
+
+    <section
+      id="section-team"
+      class="relative flex min-h-screen w-full flex-col items-center justify-center bg-zinc-950/90 backdrop-blur-lg px-4 py-20"
+    >
+      <div
+        id="tsparticles"
+        class="absolute inset-0 pointer-events-none -z-10"
+      ></div>
+
+      <Cards />
+    </section>
+  </main>
+</Layout>
