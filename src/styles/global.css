@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/* Quitar Scrolls visualmente */
+html,
+body {
+  -ms-overflow-style: none; /* IE y Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+main::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Opera */
+}
+
+main {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
