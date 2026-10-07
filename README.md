@@ -35,12 +35,12 @@ Esta aplicación recopila la información histórica del siglo XXI —desde el a
 
 ## 👥 Equipo del Proyecto
 
-| Integrante          | Rol                             | GitHub / Redes                               |
-| :------------------ | :------------------------------ | :------------------------------------------- |
-| **David Vargas**    | Lead Team / Desarrollo Frontend | [@David-Varg](https://github.com/David-Varg) |
-| **Helmuth Ramirez** | Diseño & Redacción de Contenido | [@Helmuth-Ramirez](#)                        |
-| **Tomas Bautista**  | Investigación & Documentación   | [@Tomas-Bautista](#)                         |
-| **Anderson Medina** | Diseño UI                       | [@Anderson-Medina](#)                        |
+| Integrante          | Rol                             | GitHub / Redes                                        |
+| :------------------ | :------------------------------ | :---------------------------------------------------- |
+| **David Vargas**    | Lead Team / Desarrollo Frontend | [@David-Varg](https://github.com/David-Varg)          |
+| **Helmuth Ramirez** | Diseño & Redacción de Contenido | [@Helmuth-Ramirez](https://github.com/HelmuthRamirez) |
+| **Tomas Bautista**  | Investigación & Documentación   | [@Tomas-Bautista](https://github.com/tomiu8)          |
+| **Anderson Medina** | Diseño UI                       | [@Anderson-Medina](https://github.com/Anderson-2205)  |
 
 ---
 
