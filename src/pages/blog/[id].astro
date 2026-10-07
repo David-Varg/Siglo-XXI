@@ -1,0 +1,24 @@
+---
+import { SearchBar } from "@/components/hero/navbar/SearchBar";
+import Layout from "@layouts/Layout.astro";
+
+import type { GetStaticPaths } from "astro";
+import { getCollection, render } from "astro:content";
+
+export const getStaticPaths = (async () => {
+  const content = await getCollection("hitos");
+
+  return content.map((blog) => ({
+    params: { id: blog.id },
+    props: { blog },
+  }));
+}) satisfies GetStaticPaths;
+
+const { blog } = Astro.props;
+const { Content } = await render(blog);
+---
+
+<Layout title={blog.data.title}>
+  <h1>{blog.data.title}</h1>
+  <Content />
+</Layout>

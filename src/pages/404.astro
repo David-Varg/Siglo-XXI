@@ -1,0 +1,51 @@
+---
+import Layout from "@/layouts/Layout.astro"
+---
+
+<Layout title="404 Not Found">
+    <div class="absolute w-125 h-125 bg-purple-600/20 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+    <div class="absolute w-75 h-75 bg-pink-500/10 rounded-full blur-[100px] -z-10 pointer-events-none translate-x-32 -translate-y-20"></div>
+
+    <div class="relative flex flex-col items-center">
+        <h1 class="text-[10rem] sm:text-[14rem] font-black tracking-tighter leading-none bg-clip-text text-transparent bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 select-none animate-pulse">
+            404
+        </h1>
+    
+        <div class="absolute top-1/2 -translate-y-1/2 w-full h-1 bg-linear-to-r from-transparent via-cyan-400 to-transparent opacity-75 blur-[1px]"></div>
+    </div>
+
+    <main class="relative w-full left-80 top-20 select-none">
+        <div class="text-center max-w-md space-y-4 -mt-6 sm:-mt-10 z-10">
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-100">
+                Not Found
+            </h2>
+            <p class="text-sm sm:text-base text-zinc-400 leading-relaxed">
+                La página a la que intentas acceder no existe.
+            </p>
+        </div>
+
+        <div class="mt-8 flex flex-col sm:flex-row gap-4 items-center z-10">
+            <a 
+                href="/" 
+                class="group relative inline-flex items-center gap-2 px-6 py-3 rounded-full bg-linear-to-r from-purple-600 to-pink-600 text-white font-medium text-sm transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(236,72,153,0.5)] active:scale-95 animate-pulse"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Regresar al inicio
+            </a>
+
+            <button 
+                onclick="history.back()"
+                class="px-6 py-3 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 font-medium text-sm hover:bg-zinc-800 hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
+            >
+                Volver atrás
+            </button>
+        </div>
+    </main>
+
+    <div class="absolute bottom-6 left-4 font-mono text-xs text-zinc-600 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+        <span>ERR_TIMELINE_OUT_OF_BOUNDS</span>
+    </div>
+</Layout>
