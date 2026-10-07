@@ -1,43 +1,94 @@
-# Astro Starter Kit: Minimal
+# El Siglo XXI — Aplicación Web Interactiva
 
-```sh
-pnpm create astro@latest -- --template minimal
+Proyecto académico desarrollado para la asignatura **Introducción a la Ingeniería de Software** de la **Universidad Surcolombiana**, bajo la tutoría del docente **Juan Manuel González**
+
+Se intentó crear una plataforma web interactiva inspirada en los hitos, inventores y transformaciones tecnológicas, científicas y sociales más relevantes del **Siglo XXI** (basado en la investigación y exposición del grupo asignado)
+
+---
+
+## Descripción del Proyecto
+
+Esta aplicación recopila la información histórica del siglo XXI —desde el auge de los teléfonos inteligentes, la edición genética (CRISPR), la computación cuántica y la Inteligencia Artificial hasta la exploración espacial— en una interfaz web animada y lo más interactiva posible para un blog.
+
+### Características Principales
+
+- **Timeline:** Visualización de los principales eventos del 2000 a la actualidad.
+- **Búsqueda Avanzada:** Barra de búsqueda central con autocompletado tokenizado.
+- **Visuales Cinemáticas:** Integración de partículas interactivas (`tsParticles`) y animaciones fluidas con GSAP/Framer Motion.
+- **Scroll Snap & Transiciones:** Sección de créditos y tecnologías organizada por vistas fijas.
+- **Colecciones en Markdown:** Artículos e hitos procesados mediante Content Collections de Astro.
+
+---
+
+## Tecnologías Utilizadas
+
+- **Framework:** [Astro v7](https://astro.build/) + [React v19](https://react.dev/)
+- **Estilos:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animaciones & Interactividad:**
+  - GSAP v3
+  - Framer Motion
+  - @tsparticles/astro
+- **Iconos:** Lucide Astro (`@lucide/astro`)
+- **Despliegue:** [Vercel](https://vercel.com/)
+
+---
+
+## 👥 Equipo del Proyecto
+
+| Integrante          | Rol                             | GitHub / Redes                               |
+| :------------------ | :------------------------------ | :------------------------------------------- |
+| **David Vargas**    | Lead Team / Desarrollo Frontend | [@David-Varg](https://github.com/David-Varg) |
+| **Helmuth Ramirez** | Diseño & Redacción de Contenido | [@Helmuth-Ramirez](#)                        |
+| **Tomas Bautista**  | Investigación & Documentación   | [@Tomas-Bautista](#)                         |
+| **Anderson Medina** | Diseño UI                       | [@Anderson-Medina](#)                        |
+
+---
+
+## 🚀 Instalación y Ejecución Local
+
+### Requisitos Previos
+
+- **Node.js**: `>=22.12.0`
+- **Gestor de paquetes**: `pnpm`, `npm` o `yarn`
+
+### Pasos
+
+1. **Clonar el repositorio**
+
+```bash
+   git clone [https://github.com/David-Varg/el-siglo-xxi.git](https://github.com/David-Varg/el-siglo-xxi.git)
+   cd el-siglo-xxi
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+2. Instalar dependencias:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+pnpm install
+# o: npm i
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+3. Iniciar el servidor de desarrollo:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```bash
+pnpm dev
+# o: npm run dev
+```
 
-Any static assets, like images, can be placed in the `public/` directory.
+4. Abrir en el navegador en [http://localhost:4321](http://localhost:4321)
 
-## 🧞 Commands
+## Scripts Disponibles
 
-All commands are run from the root of the project, from a terminal:
+- `pnpm dev`: Inicia el entorno de desarrollo local con Astro.
+- `pnpm build`: Compila la aplicación para producción.
+- `pnpm preview`: Vista previa local de la compilación de producción.
+- `pnpm lint`: Ejecuta ESLint en archivos `.js` y `.astro`.
+- `pnpm lint:fix`: Corrige errores automáticos de estilo de código.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## Contexto Académico
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- **Institución:** Universidad Surcolombiana
+- **Programa:** Ingeniería de Software
+- **Asignatura:** Introducción a la Ingeniería de Software
+- **Docente:** Juan Manuel González
+- **Semestre:** 1
+- **Año:** 2026
