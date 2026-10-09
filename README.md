@@ -13,9 +13,8 @@ Esta aplicación recopila la información histórica del siglo XXI —desde el a
 ### Características Principales
 
 - **Timeline:** Visualización de los principales eventos del 2000 a la actualidad.
-- **Búsqueda Avanzada:** Barra de búsqueda central con autocompletado tokenizado.
-- **Visuales Cinemáticas:** Integración de partículas interactivas (`tsParticles`) y animaciones fluidas con GSAP/Framer Motion.
-- **Scroll Snap & Transiciones:** Sección de créditos y tecnologías organizada por vistas fijas.
+- **Búsqueda:** Barra de búsqueda central con autocompletado tokenizado.
+- **Visuales Cinemáticas:** Integración de partículas interactivas y animaciones con GSAP y Framer Motion.
 - **Colecciones en Markdown:** Artículos e hitos procesados mediante Content Collections de Astro.
 
 ---
@@ -25,10 +24,11 @@ Esta aplicación recopila la información histórica del siglo XXI —desde el a
 - **Framework:** [Astro v7](https://astro.build/) + [React v19](https://react.dev/)
 - **Estilos:** [Tailwind CSS v4](https://tailwindcss.com/)
 - **Animaciones & Interactividad:**
-  - GSAP v3
+  - Three.js
+  - GSAP
   - Framer Motion
   - @tsparticles/astro
-- **Iconos:** Lucide Astro (`@lucide/astro`)
+- **Iconos:** Lucide Astro
 - **Despliegue:** [Vercel](https://vercel.com/)
 
 ---
@@ -56,7 +56,7 @@ Esta aplicación recopila la información histórica del siglo XXI —desde el a
 1. **Clonar el repositorio**
 
 ```bash
-   git clone [https://github.com/David-Varg/el-siglo-xxi.git](https://github.com/David-Varg/el-siglo-xxi.git)
+   git clone https://github.com/David-Varg/el-siglo-xxi.git
    cd el-siglo-xxi
 ```
 

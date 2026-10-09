@@ -10,12 +10,18 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"lint": "eslint \"src/**/*.{js,astro}\"",
-		"lint:fix": "eslint . --fix"
+		"devtoolbar:disable": "astro preferences disable devToolbar",
+		"lint": "eslint \"src/**/*.{js,mjs,ts,tsx,jsx,astro}\"",
+		"lint:fix": "eslint . --fix",
+		"format": "prettier --write ."
 	},
 	"dependencies": {
 		"@astrojs/react": "7.0.0",
+		"@fontsource/inter": "5.3.0",
+		"@fontsource/jetbrains-mono": "5.3.0",
+		"@fontsource/space-grotesk": "5.3.0",
 		"@lucide/astro": "1.52.0",
+		"@nanostores/react": "^2.0.1",
 		"@tailwindcss/vite": "4.3.3",
 		"@tsparticles/astro": "4.4.0",
 		"@tsparticles/engine": "4.4.0",
@@ -24,25 +30,32 @@
 		"@types/react-dom": "19.3.0",
 		"astro": "7.3.5",
 		"clsx": "2.1.1",
-		"framer-motion": "14.0.0",
 		"gsap": "3.15.0",
-		"lucide-react": "^1.52.0",
+		"lucide-react": "1.52.0",
+		"nanostores": "^1.5.5",
 		"react": "19.3.0",
 		"react-dom": "19.3.0",
 		"tailwind-merge": "3.7.0",
 		"tailwindcss": "4.3.3",
-		"three": "^0.186.1"
+		"three": "0.186.1"
 	},
 	"allowScripts": {
 		"esbuild": true
 	},
 	"devDependencies": {
-		"@types/three": "^0.186.0",
+		"@eslint/js": "10.0.1",
+		"@tailwindcss/typography": "0.5.20",
+		"@types/three": "0.186.0",
 		"@typescript-eslint/parser": "8.71.0",
+		"astro-eslint-parser": "3.2.0",
 		"eslint": "10.12.0",
-		"eslint-config-prettier": "^10.1.8",
+		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-astro": "3.2.1",
-		"eslint-plugin-prettier": "^5.5.6",
-		"prettier-plugin-astro": "^1.1.0"
+		"eslint-plugin-jsx-a11y": "6.10.2",
+		"eslint-plugin-prettier": "5.5.6",
+		"globals": "17.13.0",
+		"prettier": "3.9.9",
+		"prettier-plugin-astro": "1.1.0",
+		"typescript-eslint": "8.71.1"
 	}
 }
