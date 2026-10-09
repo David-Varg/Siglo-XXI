@@ -1,71 +1,415 @@
 ---
-import { getCollection } from "astro:content";
-
 // Componentes del Hero y Visuales
-import Hero from "@components/hero/Hero.astro";
-import Loader from "@components/Loader.astro";
-import HeroCanvas from "@components/hero/HeroCanvas.astro";
+import Hero from "@components/main/hero/Hero.astro"
+import Loader from "@components/Loader.astro"
 
 // Componentes del Timeline y Búsqueda
-import DoubleTrackTimeline from "@components/hero/timeline/DoubleTrackTimeline.astro";
-import { SearchBar } from "@components/hero/navbar/SearchBar";
+import DoubleTrackTimeline from "@components/main/timeline/DoubleTrackTimeline.astro"
 
 // Componente del Equipo
-import Cards from "@components/Team/Cards.astro";
+import TeamParticles from "@components/main/Team/TeamBackground.astro"
+import Cards from "@components/main/Team/Cards.astro"
+
+// Componente del Footer
+import Footer from "@components/Footer.astro"
 
 // Layout
-import Layout from "@layouts/Layout.astro";
-
-const posts = await getCollection("hitos");
-
-const timelineItems = posts
-  .map((post) => ({
-    id: post.id,
-    title: post.data.title,
-    year: post.data.year,
-    category: post.data.category,
-    description: post.data.description,
-    image: post.data.image,
-  }))
-  .sort((a, b) => a.year - b.year);
+import Layout from "@layouts/Layout.astro"
 ---
 
 <Layout title="Siglo XXI">
-  <Loader />
+	<Loader />
 
-  <main class="relative z-20 w-full overflow-x-hidden bg-zinc-950 text-white">
-    <section class="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4">
-      <HeroCanvas />
+	<main class="relative z-20 w-full overflow-x-hidden">
+		<section
+			id="hero-section"
+			class="relative flex min-h-screen w-full items-center justify-center overflow-hidden px-4"
+		>
+			<Hero />
+			<div
+				id="cloud-transition"
+				aria-hidden="true"
+				class="pointer-events-none absolute inset-0 z-20 overflow-hidden opacity-0"
+			>
+				<div class="absolute -inset-x-1/3 top-[28%] h-[90vh] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(245,245,244,0.62)_0%,rgba(203,213,225,0.36)_28%,rgba(148,163,184,0.12)_54%,transparent_74%)] blur-3xl"></div>
+				<div class="absolute -inset-x-1/4 bottom-[-22%] h-[78vh] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(226,232,240,0.48)_0%,rgba(148,163,184,0.18)_42%,transparent_72%)] blur-2xl"></div>
+				<div class="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-stone-100/22 via-slate-200/8 to-transparent"></div>
+			</div>
 
-      <Hero />
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-linear-to-b from-transparent via-zinc-950/80 to-zinc-950"
+			></div>
+		</section>
 
-      <div
-        aria-hidden="true"
-        class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-linear-to-b from-transparent via-zinc-950/80 to-zinc-950"
-      ></div>
-    </section>
+		<header
+			id="journey-nav"
+			inert
+			class="fixed inset-x-0 top-0 z-40 px-4 pt-4 opacity-0 invisible"
+		>
+			<nav
+				aria-label="Navegación principal"
+				class="mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-2xl border border-white/10 bg-zinc-950/55 px-4 py-3 shadow-2xl shadow-black/20 backdrop-blur-xl sm:px-6"
+			>
+				<a
+					href="#hero-section"
+					class="flex items-center gap-3 font-title text-sm font-bold tracking-wide text-white sm:text-base"
+				>
+					<span
+						aria-hidden="true"
+						class="grid size-8 place-items-center rounded-xl border border-cyan-300/25 bg-cyan-300/10 text-cyan-200"
+					>
+						XXI
+					</span>
+					<span>
+						El Siglo <span class="text-cyan-200">XXI</span>
+					</span>
+				</a>
+				<div class="flex items-center gap-1 sm:gap-2">
+					<a
+						href="#section-timeline"
+						class="rounded-lg px-3 py-2 text-xs text-zinc-200 transition hover:bg-white/10 hover:text-white sm:text-sm"
+					>
+						Línea de tiempo
+					</a>
+					<a
+						href="#section-team"
+						class="rounded-lg px-3 py-2 text-xs text-zinc-200 transition hover:bg-white/10 hover:text-white sm:text-sm"
+					>
+						Equipo
+					</a>
+					<a
+						href="#section-timeline"
+						aria-label="Comenzar recorrido"
+						class="hidden rounded-lg border border-cyan-300/25 bg-cyan-300/10 px-3 py-2 text-xs font-semibold text-cyan-100 transition hover:bg-cyan-300/20 sm:inline-flex sm:text-sm"
+					>
+						Explorar hitos{" "}
+						<span aria-hidden="true" class="ml-2">
+							↓
+						</span>
+					</a>
+				</div>
+			</nav>
+		</header>
 
-    <section
-      id="section-timeline"
-      class="relative flex min-h-screen w-full flex-col items-center justify-start px-4 py-20 bg-zinc-950"
-    >
-      <div class="z-30 w-full max-w-xl mb-12">
-        <SearchBar client:load items={timelineItems} />
-      </div>
+		<section
+			id="section-timeline"
+			class="relative z-30 mt-[-100svh] isolate flex min-h-svh w-full items-center overflow-hidden bg-[#0d0b12] px-4 py-16 sm:py-20 motion-reduce:mt-0"
+		>
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute inset-x-0 top-0 h-36 bg-linear-to-b from-transparent to-[#0d0b12]"
+			></div>
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_100%,rgba(217,119,6,0.12),transparent_48%),radial-gradient(ellipse_at_15%_20%,rgba(8,145,178,0.12),transparent_38%)]"
+			></div>
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-linear-to-r from-transparent via-cyan-200/30 to-transparent"
+			></div>
+			<DoubleTrackTimeline />
+		</section>
 
-      <DoubleTrackTimeline items={timelineItems} />
-    </section>
-
-    <section
-      id="section-team"
-      class="relative flex min-h-screen w-full flex-col items-center justify-center bg-zinc-950/90 backdrop-blur-lg px-4 py-20"
-    >
-      <div
-        id="tsparticles"
-        class="absolute inset-0 pointer-events-none -z-10"
-      ></div>
-
-      <Cards />
-    </section>
-  </main>
+		<section
+			id="section-team"
+			class="bg-zinc-950/90 backdrop-blur-lg px-4 py-10"
+		>
+			<TeamParticles />
+			<Cards />
+			<Footer />
+		</section>
+	</main>
 </Layout>
+
+<script>
+	import { gsap } from "gsap"
+	import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+	gsap.registerPlugin(ScrollTrigger)
+	let navigationTween: gsap.core.Tween | undefined
+
+	const cancelNavigationTween = () => navigationTween?.kill()
+	window.addEventListener("wheel", cancelNavigationTween, { passive: true })
+	window.addEventListener("touchstart", cancelNavigationTween, {
+		passive: true,
+	})
+	window.addEventListener("keydown", (event) => {
+		if (
+			[
+				"ArrowDown",
+				"ArrowUp",
+				"PageDown",
+				"PageUp",
+				"Home",
+				"End",
+				" ",
+			].includes(event.key)
+		)
+			cancelNavigationTween()
+	})
+
+	const initHeroJourney = () => {
+		const hero = document.querySelector<HTMLElement>("#hero-section")
+		const nav = document.querySelector<HTMLElement>("#journey-nav")
+		const clouds = document.querySelector<HTMLElement>("#cloud-transition")
+
+		if (!hero || !nav || !clouds) return
+		if (hero.dataset.journeyBound === "true") return
+		
+		hero.dataset.journeyBound = "true"
+
+		const flight = { progress: 0 }
+		const reducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches
+
+		const setFlight = (progress: number) => {
+			;(
+				window as Window & {
+					__setHeroFlightProgress?: (value: number) => void
+				}
+			).__setHeroFlightProgress?.(progress)
+		}
+
+		gsap.set(nav, {
+			autoAlpha: reducedMotion ? 1 : 0,
+			y: reducedMotion ? 0 : -18,
+		})
+		nav.toggleAttribute("inert", !reducedMotion)
+
+		if (nav.dataset.smoothNavigation !== "true") {
+			nav.dataset.smoothNavigation = "true"
+
+			nav.addEventListener("click", (e) => {
+				const link = (
+					e.target as HTMLElement
+				).closest<HTMLAnchorElement>('a[href^="#"]')
+
+				const destination = link?.getAttribute("href")?.slice(1)
+				const target = destination
+					? document.getElementById(destination)
+					: null
+
+				if (!target) return
+				e.preventDefault()
+				cancelNavigationTween()
+
+				const scrollState = { y: window.scrollY }
+				const y = Math.max(
+					0,
+					window.scrollY + target.getBoundingClientRect().top,
+				) 
+
+				if (reducedMotion) window.scrollTo(0, y)
+				else
+					navigationTween = gsap.to(scrollState, {
+						y,
+						duration: Math.min(
+							3.4,
+							Math.max(1.6, Math.abs(y - window.scrollY) / 850),
+						),
+						ease: "power2.inOut",
+						onUpdate: () => window.scrollTo(0, scrollState.y),
+						onComplete: () =>
+							history.replaceState(null, "", `#${destination}`),
+					})
+			})
+		}
+
+		if (reducedMotion) {
+			setFlight(0)
+			return
+		}
+
+		gsap.timeline({ defaults: { ease: "power3.out" } })
+			.fromTo(
+				"#hero-canvas-container",
+				{ autoAlpha: 0, scale: 1.06 },
+				{ autoAlpha: 1, scale: 1, duration: 1.25 },
+			)
+			.from(
+				"#hero-copy > *",
+				{ y: 28, autoAlpha: 0, duration: 0.72, stagger: 0.12 },
+				"-=0.72",
+			)
+			.from(
+				"#voyager-telemetry",
+				{ x: -24, autoAlpha: 0, duration: 0.7 },
+				"-=0.4",
+			)
+			.from(
+				"#hero-scroll-hint",
+				{ y: 14, autoAlpha: 0, duration: 0.55 },
+				"-=0.25",
+			)
+
+		const sequence = gsap.timeline({
+			scrollTrigger: {
+				id: "hero-flight",
+				trigger: hero,
+				start: "top top",
+				end: "+=800%",
+				scrub: 1.25,
+				pin: true,
+				anticipatePin: 1,
+				invalidateOnRefresh: true,
+			},
+			onUpdate: () => {
+				setFlight(flight.progress)
+
+				const navigationVisible = flight.progress >= 0.9
+				nav.toggleAttribute("inert", !navigationVisible)
+			},
+		})
+
+		sequence.to(flight, { progress: 1, duration: 1, ease: "none" }, 0)
+		sequence.to(
+			"#hero-copy",
+			{ autoAlpha: 0, y: -24, duration: 0.16, ease: "none" },
+			0.12,
+		)
+		sequence.to(
+			"#hero-scroll-hint",
+			{ autoAlpha: 0, y: 12, duration: 0.1, ease: "none" },
+			0.08,
+		)
+		sequence.to(
+			clouds,
+			{ opacity: 0.94, scale: 1.05, duration: 0.14, ease: "none" },
+			0.82,
+		)
+		sequence.to(
+			clouds,
+			{ opacity: 0, scale: 1.22, duration: 0.04, ease: "none" },
+			0.96,
+		)
+		sequence.to(
+			nav,
+			{ autoAlpha: 1, y: 0, duration: 0.08, ease: "power2.out" },
+			0.92,
+		)
+		gsap.fromTo(
+			"#timeline-console",
+			{ autoAlpha: 0, y: 72 },
+			{
+				autoAlpha: 1,
+				y: 0,
+				ease: "none",
+				scrollTrigger: {
+					trigger: "#section-timeline",
+					start: "top bottom",
+					end: "top top",
+					scrub: 0.65,
+					invalidateOnRefresh: true,
+				},
+			},
+		)
+	}
+
+	const initTeamAndFooterAnimations = () => {
+		const mainTimeline = gsap.timeline({
+			scrollTrigger: {
+				trigger: "#section-team",
+				start: "top 80%",
+				end: "bottom bottom",
+				toggleActions: "play none none reverse",
+			},
+		})
+
+		mainTimeline
+			.from("#header h2", {
+				y: 50,
+				autoAlpha: 0,
+				duration: 0.9,
+				ease: "power4.out",
+			})
+			.from(
+				"#header p",
+				{
+					y: 25,
+					autoAlpha: 0,
+					duration: 0.7,
+					ease: "power3.out",
+				},
+				"-=0.6",
+			)
+
+		const cards = gsap.utils.toArray<HTMLElement>("#section-team article")
+
+		if (cards.length > 0) {
+			gsap.set("#cards-grid", { perspective: 1000 })
+
+			mainTimeline.from(
+				cards,
+				{
+					y: 90,
+					scale: 0.88,
+					rotateX: -15,
+					autoAlpha: 0,
+					duration: 1,
+					stagger: {
+						amount: 0.6,
+						ease: "power2.out",
+					},
+					ease: "power4.out",
+					clearProps: "transform,perspective",
+				},
+				"-=0.4",
+			)
+
+			mainTimeline.from(
+				"#section-team article .card-avatar",
+				{
+					scale: 0.5,
+					autoAlpha: 0,
+					duration: 0.6,
+					stagger: 0.1,
+					ease: "back.out(1.7)",
+				},
+				"-=0.7",
+			)
+		}
+
+		mainTimeline.from(
+			"#global-footer",
+			{
+				y: 35,
+				autoAlpha: 0,
+				duration: 0.8,
+				ease: "power3.out",
+			},
+			"-=0.3",
+		)
+
+		cards.forEach((card) => {
+			card.addEventListener("mousemove", (e) => {
+				const rect = card.getBoundingClientRect()
+				const x = e.clientX - rect.left - rect.width / 2
+				const y = e.clientY - rect.top - rect.height / 2
+
+				gsap.to(card, {
+					rotateX: -y * 0.08,
+					rotateY: x * 0.08,
+					duration: 0.4,
+					ease: "power2.out",
+				})
+			})
+
+			card.addEventListener("mouseleave", () => {
+				gsap.to(card, {
+					rotateX: 0,
+					rotateY: 0,
+					duration: 0.6,
+					ease: "power2.out",
+				})
+			})
+		})
+	}
+
+	document.addEventListener("astro:page-load", () => {
+		ScrollTrigger.refresh()
+		initHeroJourney()
+		initTeamAndFooterAnimations()
+	})
+</script>

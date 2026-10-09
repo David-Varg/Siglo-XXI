@@ -1,0 +1,428 @@
+---
+import { getCollection } from "astro:content"
+import { SearchBar } from "@/components/navbar/SearchBar"
+
+const entries = (await getCollection("hitos")).sort(
+	(a, b) => a.data.year - b.data.year,
+)
+---
+
+<section
+	id="timeline-console"
+	class="timeline-console relative z-10 mx-auto w-full max-w-7xl px-4 py-12 sm:px-8 sm:py-16 mt-8"
+>
+	<header class="timeline-heading mb-8 flex flex-col gap-6 border-b border-white/10 pb-6 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
+		<div>
+			<p class="mb-3 flex items-center gap-2 font-mono text-[10px] tracking-[0.3em] text-amber-200/70 sm:text-xs">
+				<span class="size-1.5 rounded-full bg-amber-300 shadow-[0_0_12px_rgba(252,211,77,0.8)]"></span>
+				ARCHIVO CRONOLÓGICO // TIERRA
+			</p>
+			<h2 class="font-title text-3xl font-bold tracking-tight text-white sm:text-5xl">
+				Siglos de evolución
+			</h2>
+			<p class="mt-3 max-w-xl text-sm leading-relaxed text-zinc-400 sm:text-base">
+				Cruza los hitos que transformaron nuestra forma de vivir, crear
+				y mirar el universo.
+			</p>
+		</div>
+		<div class="w-full sm:max-w-md">
+			<SearchBar client:load />
+		</div>
+	</header>
+
+	<div class="timeline-room grid items-center gap-8 lg:grid-cols-[0.85fr_1.4fr] lg:gap-12">
+		<aside class="machine-bay relative flex min-h-64 items-center justify-center overflow-hidden rounded-4xl border border-amber-200/10 bg-zinc-950/45 px-5 py-8 sm:min-h-80">
+			<div
+				aria-hidden="true"
+				class="bay-grid absolute inset-0 opacity-40"
+			></div>
+			<div aria-hidden="true" class="bay-orbit bay-orbit--outer"></div>
+			<div aria-hidden="true" class="bay-orbit bay-orbit--inner"></div>
+			<div
+				class="time-machine relative z-10 grid size-44 place-items-center sm:size-56"
+				role="img"
+				aria-label="Cápsula del tiempo estilizada"
+			>
+				<div class="machine-ring machine-ring--outer absolute inset-1 rounded-full border border-cyan-200/45"></div>
+				<div class="machine-ring machine-ring--middle absolute inset-5 rounded-full border-2 border-amber-100/65 shadow-[0_0_28px_rgba(251,191,36,0.28)]"></div>
+				<div class="machine-core relative grid size-28 place-items-center rounded-full border border-cyan-100/40 bg-[radial-gradient(circle_at_35%_30%,rgba(207,250,254,0.7),rgba(8,145,178,0.3)_24%,rgba(9,9,11,0.95)_72%)] shadow-[inset_0_0_28px_rgba(34,211,238,0.45),0_0_36px_rgba(34,211,238,0.25)] sm:size-36">
+					<span
+						class="flex flex-col justify-center items-center rounded-full border border-white/20 bg-zinc-950/65 px-2 py-1 font-mono text-[8px] tracking-[0.18em] text-cyan-100 sm:text-[9px]"
+						oncopy="return false"
+					>
+						P.I.T.O
+						<span class="text-[5px] text-center">
+							Protocolo <br />
+							Interdimensional <br />
+							Temporal <br />
+							Organizado
+						</span>
+					</span>
+				</div>
+				<span
+					aria-hidden="true"
+					class="machine-fin machine-fin--top"
+				></span>
+				<span
+					aria-hidden="true"
+					class="machine-fin machine-fin--bottom"
+				></span>
+				<span
+					aria-hidden="true"
+					class="machine-fin machine-fin--left"
+				></span>
+				<span
+					aria-hidden="true"
+					class="machine-fin machine-fin--right"
+				></span>
+			</div>
+			<div class="absolute bottom-5 left-5 right-5 flex items-center justify-between gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-zinc-500 sm:text-[10px]">
+				<span class="select-none">Máquina del tiempo</span>
+				<span class="text-amber-100/70 select-none">Lista</span>
+			</div>
+		</aside>
+
+		<div class="min-w-0">
+			<div class="mb-5 flex items-end justify-between gap-4">
+				<div>
+					<p class="font-mono text-[10px] tracking-[0.25em] text-cyan-200/60">
+						SELECCIONA UN DESTINO
+					</p>
+					<h3 class="mt-2 font-title text-xl font-semibold text-zinc-100 sm:text-2xl">
+						Hitos destacados
+					</h3>
+				</div>
+				<span class="shrink-0 font-mono text-xs text-zinc-500 select-none">
+					{String(entries.length).padStart(3, "0")} registros
+				</span>
+			</div>
+			<div class="event-track" aria-label="Hitos históricos disponibles">
+				{entries.map((entry) => (
+					<a
+						href={`/blog/${encodeURIComponent(entry.id)}`}
+						class="event-card group"
+					>
+						<div
+							class="event-art"
+							data-category={entry.data.category}
+						>
+							<span class="event-year">{entry.data.year}</span>
+							<span class="event-category">
+								{entry.data.category}
+							</span>
+							<div aria-hidden="true" class="event-orb"></div>
+							<span aria-hidden="true" class="event-orbit"></span>
+							<span class="event-coordinates">
+								{entry.data.century} // TIERRA
+							</span>
+						</div>
+						<div class="event-copy">
+							<h4 class="font-title text-lg font-semibold text-white transition-colors group-hover:text-cyan-100">
+								{entry.data.title}
+							</h4>
+							<p class="mt-2 line-clamp-2 text-sm leading-relaxed text-zinc-400">
+								{entry.data.description}
+							</p>
+							<span class="mt-5 inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.18em] text-cyan-200/75 transition group-hover:gap-3">
+								ABRIR REGISTRO <span aria-hidden="true">→</span>
+							</span>
+						</div>
+					</a>
+				))}
+			</div>
+		</div>
+	</div>
+
+</section>
+
+<style>
+	.timeline-heading,
+	.timeline-room {
+		will-change: transform, opacity;
+	}
+
+	.machine-bay {
+		background-image: radial-gradient(
+			ellipse at 50% 55%,
+			rgba(8, 145, 178, 0.12),
+			transparent 52%
+		);
+	}
+
+	.bay-grid {
+		background-image:
+			linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+			linear-gradient(
+				90deg,
+				rgba(148, 163, 184, 0.08) 1px,
+				transparent 1px
+			);
+		background-size: 36px 36px;
+		mask-image: linear-gradient(
+			to bottom,
+			transparent,
+			black 25%,
+			black 75%,
+			transparent
+		);
+	}
+
+	.bay-orbit {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		border: 1px solid rgba(103, 232, 249, 0.18);
+		border-radius: 50%;
+		transform: translate(-50%, -50%) rotate(-22deg);
+	}
+
+	.bay-orbit--outer {
+		width: 19rem;
+		height: 7rem;
+	}
+
+	.bay-orbit--inner {
+		width: 15rem;
+		height: 5.5rem;
+		transform: translate(-50%, -50%) rotate(24deg);
+	}
+
+	.time-machine {
+		animation: capsule-idle 7.5s ease-in-out infinite;
+	}
+
+	.machine-ring--outer {
+		animation: ring-spin 18s linear infinite;
+		border-style: dashed;
+	}
+
+	.machine-ring--middle {
+		animation: ring-spin 12s linear infinite reverse;
+	}
+
+	.machine-core {
+		animation: core-pulse 4s ease-in-out infinite;
+	}
+
+	.machine-fin {
+		position: absolute;
+		width: 1.6rem;
+		height: 0.55rem;
+		border: 1px solid rgba(253, 230, 138, 0.65);
+		background: linear-gradient(
+			90deg,
+			rgba(34, 211, 238, 0.15),
+			rgba(251, 191, 36, 0.35)
+		);
+		box-shadow: 0 0 14px rgba(34, 211, 238, 0.2);
+	}
+
+	.machine-fin--top {
+		top: 0.2rem;
+		left: calc(50% - 0.8rem);
+	}
+
+	.machine-fin--bottom {
+		bottom: 0.2rem;
+		left: calc(50% - 0.8rem);
+	}
+
+	.machine-fin--left {
+		left: 0.2rem;
+		top: calc(50% - 0.275rem);
+		transform: rotate(90deg);
+	}
+
+	.machine-fin--right {
+		right: 0.2rem;
+		top: calc(50% - 0.275rem);
+		transform: rotate(90deg);
+	}
+
+	.event-track {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+		gap: 1rem;
+		perspective: 1100px;
+	}
+
+	.event-card {
+		overflow: hidden;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 1.25rem;
+		background: rgba(24, 24, 27, 0.72);
+		box-shadow: 0 18px 55px rgba(0, 0, 0, 0.22);
+		transition:
+			transform 350ms ease,
+			border-color 350ms ease,
+			box-shadow 350ms ease;
+	}
+
+	.event-card:hover,
+	.event-card:focus-visible {
+		z-index: 2;
+		transform: translateY(-6px) rotateY(-2deg);
+		border-color: rgba(103, 232, 249, 0.45);
+		box-shadow: 0 24px 65px rgba(8, 145, 178, 0.13);
+		outline: none;
+	}
+
+	.event-art {
+		position: relative;
+		display: flex;
+		min-height: 10.5rem;
+		flex-direction: column;
+		justify-content: space-between;
+		overflow: hidden;
+		padding: 1rem 1.1rem;
+		background:
+			radial-gradient(
+				ellipse at 50% 60%,
+				rgba(14, 116, 144, 0.42),
+				transparent 48%
+			),
+			linear-gradient(135deg, #09090b, #111827 65%, #0c1725);
+		isolation: isolate;
+	}
+
+	.event-art[data-category="tecnologia"] {
+		background:
+			radial-gradient(
+				ellipse at 50% 60%,
+				rgba(6, 182, 212, 0.42),
+				transparent 48%
+			),
+			linear-gradient(135deg, #09090b, #10202b 65%, #0c1725);
+	}
+
+	.event-art[data-category="salud"] {
+		background:
+			radial-gradient(
+				ellipse at 50% 60%,
+				rgba(217, 70, 239, 0.36),
+				transparent 48%
+			),
+			linear-gradient(135deg, #09090b, #211329 65%, #150d20);
+	}
+
+	.event-year {
+		position: relative;
+		z-index: 1;
+		font-family: var(--font-title);
+		font-size: 2.5rem;
+		line-height: 1;
+		font-weight: 700;
+		letter-spacing: -0.06em;
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+	.event-category {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		z-index: 1;
+		border: 1px solid rgba(255, 255, 255, 0.16);
+		border-radius: 999px;
+		padding: 0.3rem 0.55rem;
+		font: 9px var(--font-mono);
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: rgba(255, 255, 255, 0.7);
+	}
+
+	.event-orb {
+		position: absolute;
+		z-index: -1;
+		right: 15%;
+		bottom: -3rem;
+		width: 8rem;
+		height: 8rem;
+		border: 1px solid rgba(165, 243, 252, 0.35);
+		border-radius: 50%;
+		background: radial-gradient(
+			circle at 33% 28%,
+			rgba(186, 230, 253, 0.8),
+			rgba(14, 116, 144, 0.68) 30%,
+			rgba(9, 9, 11, 0.9) 72%
+		);
+		box-shadow: 0 0 40px rgba(34, 211, 238, 0.18);
+	}
+
+	.event-orbit {
+		position: absolute;
+		z-index: -1;
+		right: 4%;
+		bottom: -1.5rem;
+		width: 10rem;
+		height: 5rem;
+		border: 1px solid rgba(226, 232, 240, 0.24);
+		border-radius: 50%;
+		transform: rotate(-18deg);
+	}
+
+	.event-coordinates {
+		font: 9px var(--font-mono);
+		letter-spacing: 0.18em;
+		color: rgba(207, 250, 254, 0.52);
+	}
+
+	.event-copy {
+		padding: 1.1rem 1.2rem 1.25rem;
+	}
+
+	@keyframes capsule-idle {
+		0%,
+		78%,
+		100% {
+			transform: translateY(0) rotate(0);
+		}
+		80%,
+		82%,
+		86% {
+			transform: translateY(-3px) rotate(-1.5deg);
+		}
+		84% {
+			transform: translateY(-2px) rotate(1.5deg);
+		}
+		91% {
+			transform: translateY(-12px);
+		}
+		94% {
+			transform: translateY(0);
+		}
+		96% {
+			transform: translateY(-5px);
+		}
+		98% {
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes ring-spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	@keyframes core-pulse {
+		0%,
+		100% {
+			filter: brightness(0.9);
+		}
+		50% {
+			filter: brightness(1.3);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.time-machine,
+		.machine-ring--outer,
+		.machine-ring--middle,
+		.machine-core {
+			animation: none;
+		}
+		.event-card {
+			transition: none;
+		}
+	}
+</style>

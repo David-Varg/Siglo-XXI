@@ -1,19 +1,66 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+	--font-title: "Space Grotesk", sans-serif;
+	--font-body: "Inter", sans-serif;
+	--font-mono: "JetBrains Mono", monospace;
+
+	--animate-carousel-down: carousel-down 10s linear infinite;
+	--animate-carousel-up: carousel-up 10s linear infinite;
+
+	@keyframes carousel-up {
+		0% {
+			transform: translateY(35%);
+		}
+		100% {
+			transform: translateY(-35%);
+		}
+	}
+
+	@keyframes carousel-down {
+		0% {
+			transform: translateY(-35%);
+		}
+		100% {
+			transform: translateY(35%);
+		}
+	}
+}
 
 /* Quitar Scrolls visualmente */
 html,
 body {
-  -ms-overflow-style: none; /* IE y Edge */
-  scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE y Edge */
+	scrollbar-width: none; /* Firefox */
 }
 
 html::-webkit-scrollbar,
 body::-webkit-scrollbar,
 main::-webkit-scrollbar {
-  display: none; /* Chrome, Safari y Opera */
+	display: none; /* Chrome, Safari y Opera */
 }
 
 main {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.retro-epoch {
+	filter: grayscale(1) contrast(1.1);
+	position: relative;
+}
+
+.retro-epoch::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 5;
+	background-image: url("/path/to/film-grain-texture.avif");
+	opacity: 0.1;
+	pointer-events: none;
+}
+
+.retro-epoch .text-cyan-400 {
+	color: #d1d5db;
 }
