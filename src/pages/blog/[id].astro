@@ -1,24 +1,241 @@
 ---
-import { SearchBar } from "@/components/hero/navbar/SearchBar";
-import Layout from "@layouts/Layout.astro";
+// Layouts
+import LayoutOfPages from "@layouts/Layout.astro"
 
-import type { GetStaticPaths } from "astro";
-import { getCollection, render } from "astro:content";
+// Interactive component
+import { AudioPlayer } from "@components/AudioPlayer"
+
+// Static components
+import Header from "@components/contentBlog/Header.astro"
+import Aside from "@components/contentBlog/AsideInfo.astro"
+import MainConcent from "@components/contentBlog/Content.astro"
+import Footer from "@components/Footer.astro"
+
+import type { GetStaticPaths } from "astro"
+import { getCollection, render } from "astro:content"
 
 export const getStaticPaths = (async () => {
-  const content = await getCollection("hitos");
+	const content = await getCollection("hitos")
 
-  return content.map((blog) => ({
-    params: { id: blog.id },
-    props: { blog },
-  }));
-}) satisfies GetStaticPaths;
+	return content.map((blog, index) => {
+		const nextBlog = content[(index + 1) % content.length]
+		return {
+			params: { id: blog.id },
+			props: {
+				blog,
+				nextBlogId: nextBlog.id,
+				nextBlogTitle: nextBlog.data.title,
+			},
+		}
+	})
+}) satisfies GetStaticPaths
 
-const { blog } = Astro.props;
-const { Content } = await render(blog);
+const { blog, nextBlogId, nextBlogTitle } = Astro.props
+const { Content } = await render(blog)
+
+const {
+	title,
+	year,
+	century,
+	inventor,
+	precededBy,
+	place,
+	category,
+	description,
+	impactScore,
+	heroImage,
+	model3d,
+} = blog.data
+
+const isRetroEpoch = year < 1950
+const epochTheme = isRetroEpoch ? "retro-epoch" : "modern-epoch"
+
+const epochConfig = isRetroEpoch
+	? {
+			glowColor: "cyan",
+			barColor: "emerald",
+			badgeConfig: { class: "bg-slate-800 border-white/10 text-white" },
+		}
+	: {
+			glowColor: "cyan",
+			barColor: "cyan",
+			badgeConfig: {
+				class: "bg-cyan-950/60 border-cyan-500/30 text-cyan-300",
+			},
+		}
 ---
 
-<Layout title={blog.data.title}>
-  <h1>{blog.data.title}</h1>
-  <Content />
-</Layout>
+<LayoutOfPages title={title}>
+	<div class={`${epochTheme} min-h-screen relative`}>
+		<!-- Tu código del Grid de Fondo con Parallax de Orbes... -->
+
+		<article
+			class="relative z-10 min-h-screen max-w-7xl mx-auto px-4 py-12"
+			id="blog-article"
+		>
+			<Header
+				year={year}
+				century={century}
+				place={place}
+				impactScore={impactScore}
+				badgeConfig={epochConfig}
+			>
+				{title}
+			</Header>
+
+			<div
+				id="resto"
+				class="flex justify-around lg:grid-cols-12 gap-12 mt-8"
+			>
+				<Aside
+					inventor={inventor}
+					precededBy={precededBy}
+					impactScore={impactScore}
+					barColor={epochConfig.barColor}
+				/>
+				<MainConcent
+					description={description}
+					heroImage={heroImage}
+					model3d={model3d}
+					isRetro={isRetroEpoch}
+				>
+					<Content />
+				</MainConcent>
+			</div>
+		</article>
+
+		<section
+			id="next-post-trigger"
+			class="max-w-4xl mx-auto px-4 py-16 text-center border-t border-white/10 my-12"
+			data-next-url={`/hitos/${nextBlogId}`}
+		>
+			<span class="text-xs uppercase tracking-widest text-emerald-400 font-semibold">
+				Siguiente Hito Histórico
+			</span>
+			<h3 class="text-2xl md:text-4xl font-bold mt-2 mb-6 text-white">
+				{nextBlogTitle}
+			</h3>
+			<a
+				href={`/blog/${nextBlogId}`}
+				class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/20"
+			>
+				Cargar siguiente hito
+				<svg
+					class="w-4 h-4"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M14 5l7 7m0 0l-7 7m7-7H3"
+					></path>
+				</svg>
+			</a>
+		</section>
+		
+		<Footer />
+	</div>
+</LayoutOfPages>
+
+<script>
+	import { gsap } from "gsap"
+	import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+	gsap.registerPlugin(ScrollTrigger)
+
+	let ctx: gsap.Context | null = null
+
+	document.addEventListener("astro:page-load", () => {
+		if (ctx) ctx.revert()
+
+		ctx = gsap.context(() => {
+			const tl = gsap.timeline({
+				defaults: { ease: "power3.out" },
+			})
+
+			tl.from("#main-header", {
+				y: -40,
+				autoAlpha: 0,
+				duration: 1,
+			})
+				.from(
+					"#aside-info",
+					{
+						x: -30,
+						autoAlpha: 0,
+						duration: 0.8,
+					},
+					"-=0.5",
+				)
+				.from(
+					"#main-content",
+					{
+						y: 30,
+						autoAlpha: 0,
+						duration: 0.8,
+					},
+					"<0.1",
+				)
+
+			const articleElements = gsap.utils.toArray<HTMLElement>(
+				"#main-content :is(h2, h3, p, img, blockquote, ul, ol)",
+			)
+
+			ScrollTrigger.batch(articleElements, {
+				start: "top 88%",
+				once: false,
+				onEnter: (batch) => {
+					gsap.fromTo(
+						batch,
+						{ y: 35, autoAlpha: 0 },
+						{
+							y: 0,
+							autoAlpha: 1,
+							duration: 0.7,
+							stagger: 0.15,
+							ease: "power2.out",
+							overwrite: "auto",
+						},
+					)
+				},
+				onLeaveBack: (batch) => {
+					gsap.to(batch, {
+						y: 35,
+						autoAlpha: 0,
+						duration: 0.4,
+						overwrite: "auto",
+					})
+				},
+			})
+
+			const nextTrigger = document.getElementById("next-post-trigger")
+			if (nextTrigger) {
+				const nextUrl = nextTrigger.dataset.nextUrl
+
+				ScrollTrigger.create({
+					trigger: nextTrigger,
+					start: "top 80%",
+					onEnter: () => {
+						gsap.fromTo(
+							nextTrigger,
+							{ scale: 0.95, autoAlpha: 0.7 },
+							{
+								scale: 1,
+								autoAlpha: 1,
+								duration: 0.6,
+								ease: "back.out(1.7)",
+							},
+						)
+					},
+				})
+			}
+		})
+	})
+
+	document.addEventListener("astro:before-swap", () => {
+		if (ctx) ctx.revert()
+	})
+</script>
