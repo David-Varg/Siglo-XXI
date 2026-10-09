@@ -1,24 +1,36 @@
 ---
-import "../styles/global.css";
-import { ClientRouter } from "astro:transitions";
+import "@fontsource/space-grotesk/500.css"
+import "@fontsource/space-grotesk/700.css"
+import "@fontsource/inter/400.css"
+import "@fontsource/inter/600.css"
+import "@fontsource/jetbrains-mono/400.css"
+import "@fontsource/jetbrains-mono/700.css"
 
+import "../styles/global.css"
+import { ClientRouter } from "astro:transitions"
+
+// Interactive Components
+import { AudioPlayer } from "@components/AudioPlayer"
+
+// Typo para Tailwind
 interface Props {
-  title: string;
+	title: string
 }
 
-const { title } = Astro.props;
+const { title } = Astro.props
 ---
 
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="/icon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <ClientRouter />
-    <title>{ title }</title>
-  </head>
-  <body class="bg-gray-900 text-white w-screen min-h-screen overflow-x-hidden">
-    <slot />
-  </body>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/icon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<ClientRouter />
+		<title>{ title }</title>
+	</head>
+	<body class="bg-zinc-950 text-white w-screen min-h-screen overflow-x-hidden">
+		<slot />
+		<AudioPlayer client:idle transition:persist />
+	</body>
 </html>
