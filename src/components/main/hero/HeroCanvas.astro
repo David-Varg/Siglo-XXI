@@ -33,7 +33,7 @@
 			0.1,
 			1000,
 		)
-		camera.position.set(100, 0, -2)
+		camera.position.set(0, 1.5, -11)
 		camera.lookAt(0, 0, 0)
 
 		const renderer = new THREE.WebGLRenderer({
@@ -90,6 +90,8 @@
 			const pivot = voyager?.position ?? cameraPivot.set(0, 0, 0)
 
 			if (flightProgress < 0.42) {
+				if (voyager) voyager.position.z = 0
+
 				const turn = THREE.MathUtils.clamp(flightProgress / 0.34, 0, 1)
 				const angle = turn * Math.PI
 
@@ -286,6 +288,7 @@
 				voyager.receiveShadow = true
 
 				scene.add(voyager)
+				setFlightProgress(flightProgress)
 
 				renderer.render(scene, camera)
 
