@@ -1,12 +1,7 @@
 ---
-interface Props {
-	description: string
-	heroImage: string
-	model3d?: string
-	isRetro?: boolean
-}
+import type { BlogContentProps } from "@/types/blog"
 
-const { description, heroImage, model3d, isRetro } = Astro.props
+const { description, heroImage, model3d, isRetro }: BlogContentProps = Astro.props
 ---
 
 <main id="main-content" class="lg:col-span-8">

@@ -1,15 +1,6 @@
 ---
 import { SearchBar } from "../navbar/SearchBar"
-
-interface Props {
-	year: number
-	century: string
-	place: string
-	impactScore: number
-	badgeConfig?: {
-		class: string
-	}
-}
+import type { BlogHeaderProps } from "@/types/blog"
 
 const {
 	year,
@@ -17,7 +8,7 @@ const {
 	place,
 	impactScore,
 	badgeConfig = { class: "bg-slate-800 border-white/10 text-white" },
-} = Astro.props
+}: BlogHeaderProps = Astro.props
 ---
 
 <header

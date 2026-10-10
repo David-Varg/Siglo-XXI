@@ -1,22 +1,12 @@
 ---
-interface Props {
-	inventor: {
-		name: string
-		role: string
-		avatar?: string | undefined
-		github?: string | undefined
-	}[]
-	precededBy: string[]
-	impactScore: number
-	barColor?: string
-}
+import type { BlogAsideInfoProps } from "@/types/blog"
 
 const {
 	inventor,
 	precededBy,
 	impactScore,
 	barColor = "emerald",
-}: Props = Astro.props
+}: BlogAsideInfoProps = Astro.props
 ---
 
 <aside id="aside-info" class="lg:col-span-4">

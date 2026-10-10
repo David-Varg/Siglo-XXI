@@ -2,18 +2,12 @@ import { useState, useEffect, useRef } from "react"
 import { useStore } from "@nanostores/react"
 import { $hitosCache } from "@store/searchStore"
 
-import type { SearchItem } from "@hooks/SearchResult"
+import type { SearchItem, SearchSuggestion } from "@/types/search"
 import { Search } from "@hooks/SearchResult"
-
-interface resultsTypo {
-	id: string
-	tituloCompleto: string
-	url: string
-}
 
 export const SearchBar = () => {
 	const [query, setQuery] = useState("")
-	const [results, setResults] = useState<resultsTypo[]>([])
+	const [results, setResults] = useState<SearchSuggestion[]>([])
 	const [isOpen, setIsOpen] = useState(false)
 	const [cargando, setCargando] = useState(false)
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1)
@@ -62,7 +56,7 @@ export const SearchBar = () => {
 		setQuery(val)
 
 		const datosActuales = hitos || []
-		const resultados: resultsTypo[] = Search.autocompletado(
+		const resultados = Search.autocompletado(
 			val,
 			datosActuales,
 		)
