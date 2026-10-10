@@ -151,6 +151,8 @@ import Layout from "@layouts/Layout.astro"
 
 	const initHeroJourney = () => {
 		const hero = document.querySelector<HTMLElement>("#hero-section")
+		const telemetry =
+			document.querySelector<HTMLElement>("#voyager-telemetry")
 		const nav = document.querySelector<HTMLElement>("#journey-nav")
 		const clouds = document.querySelector<HTMLElement>("#cloud-transition")
 
@@ -267,6 +269,18 @@ import Layout from "@layouts/Layout.astro"
 		sequence.to(
 			"#hero-copy",
 			{ autoAlpha: 0, y: -24, duration: 0.16, ease: "none" },
+			0.12,
+		)
+		sequence.fromTo(
+			telemetry,
+			{ autoAlpha: 1, y: 0 },
+			{
+				autoAlpha: 0,
+				y: -24,
+				duration: 0.16,
+				ease: "none",
+				overwrite: "auto",
+			},
 			0.12,
 		)
 		sequence.to(
