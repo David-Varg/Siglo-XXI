@@ -1,6 +1,5 @@
 ---
 import { getCollection } from "astro:content"
-import { SearchBar } from "@/components/navbar/SearchBar"
 
 const entries = (await getCollection("hitos")).sort(
 	(a, b) => a.data.year - b.data.year,
@@ -24,9 +23,6 @@ const entries = (await getCollection("hitos")).sort(
 				Cruza los hitos que transformaron nuestra forma de vivir, crear
 				y mirar el universo.
 			</p>
-		</div>
-		<div class="w-full sm:max-w-md">
-			<SearchBar client:load />
 		</div>
 	</header>
 

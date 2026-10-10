@@ -15,6 +15,7 @@ import Footer from "@components/Footer.astro"
 
 // Layout
 import Layout from "@layouts/Layout.astro"
+import { SearchBar } from "@/components/navbar/SearchBar"
 ---
 
 <Layout title="Siglo XXI">
@@ -49,7 +50,7 @@ import Layout from "@layouts/Layout.astro"
 		>
 			<nav
 				aria-label="Navegación principal"
-				class="mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-2xl border border-white/10 bg-zinc-950/55 px-4 py-3 shadow-2xl shadow-black/20 backdrop-blur-xl sm:px-6"
+				class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-zinc-950/55 px-4 py-3 shadow-2xl shadow-black/20 backdrop-blur-xl lg:flex-nowrap sm:gap-4 sm:px-6"
 			>
 				<a
 					href="#hero-section"
@@ -65,29 +66,27 @@ import Layout from "@layouts/Layout.astro"
 						El Siglo <span class="text-cyan-200">XXI</span>
 					</span>
 				</a>
-				<div class="flex items-center gap-1 sm:gap-2">
+				<div class="journey-nav-links relative isolate flex items-center gap-1 sm:gap-2">
+					<span
+						id="nav-hover-indicator"
+						aria-hidden="true"
+						class="pointer-events-none absolute inset-y-0 left-0 z-0 w-0 rounded-lg bg-white/10 opacity-0"
+					></span>
 					<a
 						href="#section-timeline"
-						class="rounded-lg px-3 py-2 text-xs text-zinc-200 transition hover:bg-white/10 hover:text-white sm:text-sm"
+						class="relative z-10 rounded-lg px-3 py-2 text-xs text-zinc-200 transition-colors hover:text-white focus-visible:text-white sm:text-sm"
 					>
 						Línea de tiempo
 					</a>
 					<a
 						href="#section-team"
-						class="rounded-lg px-3 py-2 text-xs text-zinc-200 transition hover:bg-white/10 hover:text-white sm:text-sm"
+						class="relative z-10 rounded-lg px-3 py-2 text-xs text-zinc-200 transition-colors hover:text-white focus-visible:text-white sm:text-sm"
 					>
 						Equipo
 					</a>
-					<a
-						href="#section-timeline"
-						aria-label="Comenzar recorrido"
-						class="hidden rounded-lg border border-cyan-300/25 bg-cyan-300/10 px-3 py-2 text-xs font-semibold text-cyan-100 transition hover:bg-cyan-300/20 sm:inline-flex sm:text-sm"
-					>
-						Explorar hitos{" "}
-						<span aria-hidden="true" class="ml-2">
-							↓
-						</span>
-					</a>
+				</div>
+				<div class="order-3 w-full sm:order-none sm:w-80 lg:w-96">
+					<SearchBar client:load />
 				</div>
 			</nav>
 		</header>
@@ -216,6 +215,33 @@ import Layout from "@layouts/Layout.astro"
 						onComplete: () =>
 							history.replaceState(null, "", `#${destination}`),
 					})
+			})
+		}
+
+		const navLinks = nav.querySelector<HTMLElement>(".journey-nav-links")
+		const indicator = nav.querySelector<HTMLElement>("#nav-hover-indicator")
+		if (navLinks && indicator && indicator.dataset.bound !== "true") {
+			indicator.dataset.bound = "true"
+			const moveIndicator = (link: HTMLElement) => {
+				gsap.to(indicator, {
+					x: link.offsetLeft,
+					width: link.offsetWidth,
+					autoAlpha: 1,
+					duration: 0.32,
+					ease: "power3.out",
+					overwrite: true,
+				})
+			}
+			navLinks.querySelectorAll<HTMLElement>("a[href^='#']").forEach((link) => {
+				link.addEventListener("pointerenter", () => moveIndicator(link))
+				link.addEventListener("focus", () => moveIndicator(link))
+			})
+			navLinks.addEventListener("pointerleave", () => {
+				gsap.to(indicator, { autoAlpha: 0, duration: 0.18, overwrite: true })
+			})
+			navLinks.addEventListener("focusout", (event) => {
+				if (!navLinks.contains(event.relatedTarget as Node | null))
+					gsap.to(indicator, { autoAlpha: 0, duration: 0.18, overwrite: true })
 			})
 		}
 
