@@ -141,15 +141,15 @@ export const SearchBar = () => {
 
 			{results.length > 0 && (
 				<ul
-                    aria-hidden={!isOpen}
-                    inert={!isOpen}
-                    className={[
-                        "absolute top-full left-0 right-0 mt-2 bg-zinc-900/95 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl z-50 text-left divide-y divide-zinc-800/50 max-h-60 overflow-y-scroll scrollbar-none transition-[opacity,transform,visibility] duration-200 ease-out",
-                        isOpen
-                            ? "visible translate-y-0 opacity-100"
-                            : "invisible -translate-y-1 opacity-0 pointer-events-none",
-                    ].join(" ")}
-                >
+					aria-hidden={!isOpen}
+					inert={!isOpen}
+					className={[
+						"absolute top-full left-0 right-0 mt-2 bg-zinc-900/95 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl z-50 text-left divide-y divide-zinc-800/50 max-h-60 overflow-y-scroll scrollbar-none transition-[opacity,transform,visibility] duration-200 ease-out",
+						isOpen
+							? "visible translate-y-0 opacity-100"
+							: "invisible -translate-y-1 opacity-0 pointer-events-none",
+					].join(" ")}
+				>
 					{results.map((item, i) => {
 						const isSelected = i === selectedIndex
 
