@@ -2,7 +2,7 @@ const dialog = document.querySelector<HTMLDialogElement>("#team-card-dialog")
 
 if (dialog && dialog.dataset.bound !== "true") {
 	dialog.dataset.bound = "true"
-	let opener: HTMLButtonElement | null = null
+	let opener: HTMLElement | null = null
 
 	const setLink = (key: "github" | "twitter" | "threads", url: string) => {
 		const link = dialog.querySelector<HTMLAnchorElement>(`[data-dialog-${key}]`)
@@ -11,23 +11,33 @@ if (dialog && dialog.dataset.bound !== "true") {
 		link.hidden = !url || url === "#"
 	}
 
-	document.querySelectorAll<HTMLButtonElement>("[data-card-open]").forEach((button) => {
-		button.addEventListener("click", () => {
-			opener = button
+	const openCard = (card: HTMLElement) => {
+		opener = card
 			const avatar = dialog.querySelector<HTMLImageElement>("[data-dialog-avatar]")
 			if (avatar) {
-				avatar.src = button.dataset.avatar ?? ""
-				avatar.alt = `Foto de ${button.dataset.name ?? "integrante"}`
+				avatar.src = card.dataset.avatar ?? ""
+				avatar.alt = `Foto de ${card.dataset.name ?? "integrante"}`
 			}
-			dialog.querySelector<HTMLElement>("[data-dialog-name]")!.textContent = button.dataset.name ?? ""
-			dialog.querySelector<HTMLElement>("[data-dialog-role]")!.textContent = button.dataset.role ?? ""
+			dialog.querySelector<HTMLElement>("[data-dialog-name]")!.textContent = card.dataset.name ?? ""
+			dialog.querySelector<HTMLElement>("[data-dialog-role]")!.textContent = card.dataset.role ?? ""
 			const badge = dialog.querySelector<HTMLElement>("[data-dialog-badge]")!
-			badge.textContent = button.dataset.badge ?? ""
+			badge.textContent = card.dataset.badge ?? ""
 			badge.hidden = !badge.textContent
-			setLink("github", button.dataset.github ?? "")
-			setLink("twitter", button.dataset.twitter ?? "")
-			setLink("threads", button.dataset.threads ?? "")
+			setLink("github", card.dataset.github ?? "")
+			setLink("twitter", card.dataset.twitter ?? "")
+			setLink("threads", card.dataset.threads ?? "")
 			dialog.showModal()
+	}
+
+	document.querySelectorAll<HTMLElement>("[data-card-open]").forEach((card) => {
+		card.addEventListener("click", (event) => {
+			if (event.target instanceof Element && event.target.closest("a")) return
+			openCard(card)
+		})
+		card.addEventListener("keydown", (event) => {
+			if (event.target !== card || (event.key !== "Enter" && event.key !== " ")) return
+			event.preventDefault()
+			openCard(card)
 		})
 	})
 
