@@ -15,15 +15,18 @@ export const VoyagerInfo = () => {
 				BASE_DISTANCE_KM + elapsedSeconds * SPEED_KM_PER_SEC
 
 			setKms(Math.floor(currentDistance).toLocaleString("es-ES"))
-
-			requestAnimationFrame(updateDistance)
 		}
 
 		updateDistance()
+		const interval = setInterval(updateDistance, 1000)
+		return () => clearInterval(interval)
 	}, [])
 
 	return (
-		<div id="voyager-telemetry" className="type-label absolute bottom-28 left-8 z-20 flex flex-col gap-2 rounded-xl border border-cyan-500/30 bg-zinc-950/60 p-4 text-xs text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)] backdrop-blur-md">
+		<div
+			id="voyager-telemetry"
+			className="type-label absolute bottom-20 left-4 right-4 z-20 flex flex-col gap-2 rounded-xl border border-cyan-500/30 bg-zinc-950/60 p-3 text-[10px] text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)] backdrop-blur-md sm:bottom-28 sm:left-8 sm:right-auto sm:p-4 sm:text-xs"
+		>
 			<div className="flex items-center gap-2 border-b border-cyan-500/20 pb-2">
 				<span className="relative flex h-2 w-2">
 					<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75"></span>
@@ -34,7 +37,7 @@ export const VoyagerInfo = () => {
 				</span>
 			</div>
 
-			<div className="grid grid-cols-2 gap-x-6 gap-y-1.5 pt-1 text-[11px]">
+			<div className="grid grid-cols-2 gap-x-4 gap-y-1.5 pt-1 text-[9px] sm:gap-x-6 sm:text-[11px]">
 				<span className="text-zinc-400">Hito:</span>
 				<span className="text-emerald-600 font-extrabold">
 					Primer objeto en espacio <br />

@@ -5,6 +5,10 @@ let isLoading = false
 const initParticles = async (container: HTMLElement) => {
 	if (isLoading || container.dataset.loaded === "true") return
 	isLoading = true
+	const compactDevice =
+		window.matchMedia("(max-width: 767px)").matches ||
+		window.matchMedia("(pointer: coarse)").matches ||
+		navigator.hardwareConcurrency <= 4
 
 	try {
 		const [{ tsParticles }, { loadSlim }] = await Promise.all([
@@ -18,13 +22,13 @@ const initParticles = async (container: HTMLElement) => {
 			id: container.id,
 			options: {
 				fullScreen: { enable: false },
-				fpsLimit: 30,
+				fpsLimit: compactDevice ? 20 : 30,
 				particles: {
 					color: { value: "#a7f3d0" },
 					links: {
 						color: "#818cf8",
 						distance: 140,
-						enable: true,
+						enable: !compactDevice,
 						opacity: 0.25,
 						width: 1,
 					},
@@ -34,19 +38,21 @@ const initParticles = async (container: HTMLElement) => {
 						direction: "none",
 						outModes: { default: "bounce" },
 					},
-					collisions: { enable: true },
+					collisions: { enable: !compactDevice },
 					number: {
 						density: { enable: true, width: 800, height: 800 },
-						value: 100,
+						value: compactDevice ? 42 : 100,
 					},
 					opacity: { value: { min: 0.2, max: 0.6 } },
 					size: { value: { min: 1.5, max: 4 } },
 				},
 				interactivity: {
-					events: { onHover: { enable: true, mode: "grab" } },
+					events: {
+						onHover: { enable: !compactDevice, mode: "grab" },
+					},
 					modes: { grab: { distance: 200 } },
 				},
-				detectRetina: true,
+				detectRetina: !compactDevice,
 			},
 		})
 		container.dataset.loaded = "true"

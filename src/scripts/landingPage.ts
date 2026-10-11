@@ -239,8 +239,14 @@ const initHeroJourney = () => {
 	gsap.timeline({
 		scrollTrigger: {
 			trigger: "#timeline-console [data-carousel-stage]",
-			start: "top 92%",
-			end: "bottom 12%",
+			start: () =>
+				window.matchMedia("(max-width: 767px)").matches
+					? "top bottom"
+					: "top 92%",
+			end: () =>
+				window.matchMedia("(max-width: 767px)").matches
+					? "bottom top"
+					: "bottom 12%",
 			scrub: 0.8,
 			invalidateOnRefresh: true,
 		},

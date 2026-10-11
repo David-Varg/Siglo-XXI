@@ -44,6 +44,7 @@ const initScene = async () => {
 	const scene = new THREE.Scene()
 	const compactDevice =
 		window.matchMedia("(max-width: 767px)").matches ||
+		window.matchMedia("(pointer: coarse)").matches ||
 		navigator.hardwareConcurrency <= 4
 	const camera = new THREE.PerspectiveCamera(
 		60,
@@ -329,7 +330,7 @@ const initScene = async () => {
 
 			const maxDim = Math.max(size.x, size.y, size.z)
 			if (maxDim > 0) {
-				const targetScale = 52 / maxDim
+				const targetScale = (compactDevice ? 22 : 52) / maxDim
 				saturn.scale.set(targetScale, targetScale, targetScale)
 			}
 
@@ -340,7 +341,8 @@ const initScene = async () => {
 				}
 			})
 
-			saturn.position.set(-102, -32, 184)
+			if (compactDevice) saturn.position.set(-22, -8, 130)
+			else saturn.position.set(-102, -32, 184)
 			saturn.rotation.set(0.8, 0.1, -0.6)
 			saturn.castShadow = true
 			saturn.receiveShadow = true

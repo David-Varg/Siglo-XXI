@@ -36,15 +36,20 @@ export const AudioPlayer = () => {
 	}
 
 	return (
-		<div id="audio-player" className="fixed bottom-10 right-10 z-40 select-none">
+		<div
+			id="audio-player"
+			className="fixed bottom-10 right-10 z-40 select-none"
+		>
 			<audio ref={audioRef} loop src="/sounds/Utrymme.mp3" />
 
 			<button
 				onClick={togglePlay}
-				className={`size-10 hover:size-12 rounded-full flex items-center justify-center border backdrop-blur-md transition-all duration-300 shadow-lg cursor-pointer
+				aria-label={playing ? "Silenciar sonido" : "Activar sonido"}
+				aria-pressed={playing}
+				className={`size-11 hover:size-12 rounded-full flex items-center justify-center border backdrop-blur-md transition-all duration-300 shadow-lg cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200
         ${
 			playing
-				? "bg-purple-600/80 border-purple-400 text-white animate-pulse shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+				? "bg-purple-600/80 border-purple-400 text-white motion-safe:animate-pulse shadow-[0_0_15px_rgba(168,85,247,0.5)]"
 				: "bg-black/40 hover:bg-gray-900/60 border-white/10 text-gray-400"
 		}`}
 			>

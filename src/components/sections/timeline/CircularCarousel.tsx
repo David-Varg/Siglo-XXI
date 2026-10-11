@@ -396,6 +396,10 @@ export const CircularCarousel = ({
 	const closeButtonRef = useRef<HTMLButtonElement>(null)
 	const [selectedItem, setSelectedItem] =
 		useState<CircularCarouselItem | null>(null)
+	const [selectedImageFailed, setSelectedImageFailed] = useState(false)
+	const [unavailableImages, setUnavailableImages] = useState<Set<string>>(
+		() => new Set(),
+	)
 	const stageRef = useRef<HTMLDivElement>(null)
 	const cameraRef = useRef<HTMLDivElement>(null)
 	const ringRef = useRef<HTMLDivElement>(null)
@@ -502,7 +506,15 @@ export const CircularCarousel = ({
 						)
 					else resolve()
 				}
-				image.onerror = () => resolve()
+				image.onerror = () => {
+					setUnavailableImages((current) => {
+						if (current.has(src)) return current
+						const next = new Set(current)
+						next.add(src)
+						return next
+					})
+					resolve()
+				}
 				image.src = src
 			})
 		const timeout = new Promise<void>((resolve) =>
@@ -1079,8 +1091,15 @@ export const CircularCarousel = ({
 		if (!card) return
 		const index = Number(card.getAttribute("data-cc-index"))
 		if (focusOnClick) focusIndex(index)
-		setSelectedItem(list[index])
-		onItemClick?.(list[index], index)
+		openItem(index)
+	}
+
+	const openItem = (index: number) => {
+		const item = list[index]
+		if (!item) return
+		setSelectedImageFailed(unavailableImages.has(item.src))
+		setSelectedItem(item)
+		onItemClick?.(item, index)
 	}
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -1092,8 +1111,7 @@ export const CircularCarousel = ({
 		else if (event.key === "End") focusIndex(count - 1)
 		else if (event.key === "Enter" || event.key === " ") {
 			const index = activeRef.current
-			setSelectedItem(list[index])
-			onItemClick?.(list[index], index)
+			openItem(index)
 		} else return
 		event.preventDefault()
 	}
@@ -1149,21 +1167,31 @@ export const CircularCarousel = ({
 				aria-hidden="true"
 			>
 				<div
-					className="absolute left-0 top-0 w-full overflow-hidden "
+					className="absolute left-0 top-0 w-full overflow-hidden bg-[radial-gradient(ellipse_at_center,rgba(8,145,178,0.2),rgba(9,9,11,0.98))]"
 					style={{
 						height: axis === "x" ? size : cardH,
 						borderRadius: frameRadius,
 					}}
 				>
-					<img
-						className="pointer-events-none absolute block max-w-none select-none object-cover [-webkit-user-drag:none] "
-						src={item.src}
-						alt=""
-						draggable={false}
-						decoding="async"
-						style={photoStyle}
-					/>
-					{gone && (
+					{!unavailableImages.has(item.src) && (
+						<img
+							className="pointer-events-none absolute block max-w-none select-none object-cover [-webkit-user-drag:none]"
+							src={item.src}
+							alt=""
+							draggable={false}
+							decoding="async"
+							onError={() => {
+								setUnavailableImages((current) => {
+									if (current.has(item.src)) return current
+									const next = new Set(current)
+									next.add(item.src)
+									return next
+								})
+							}}
+							style={photoStyle}
+						/>
+					)}
+					{gone && !unavailableImages.has(gone.src) && (
 						<img
 							key={`leaving-${leaving.id}`}
 							className=" pointer-events-none absolute block max-w-none select-none object-cover [-webkit-user-drag:none] animate-[circular-carousel-leave_700ms_cubic-bezier(0.33,1,0.68,1)_both]"
@@ -1171,6 +1199,14 @@ export const CircularCarousel = ({
 							alt=""
 							draggable={false}
 							decoding="async"
+							onError={() => {
+								setUnavailableImages((current) => {
+									if (current.has(gone.src)) return current
+									const next = new Set(current)
+									next.add(gone.src)
+									return next
+								})
+							}}
 							style={{
 								...photoStyle,
 								animationDelay: `${Math.round(leaving.delays[index])}ms`,
@@ -1199,7 +1235,7 @@ export const CircularCarousel = ({
 				} as React.CSSProperties
 			}
 			role="region"
-			aria-roledescription="carousel"
+			aria-roledescription="carrusel"
 			aria-label={ariaLabel}
 			tabIndex={0}
 			data-axis={axis}
@@ -1248,7 +1284,7 @@ export const CircularCarousel = ({
 									className="absolute left-0 top-0 h-0 w-0 [transform-style:preserve-3d]"
 									data-cc-index={index}
 									role="group"
-									aria-roledescription="slide"
+									aria-roledescription="diapositiva"
 									aria-label={`${item.title || item.alt || `Noticia ${index + 1}`}, ${index + 1} de ${count}`}
 								>
 									{tiles.map((tile) =>
@@ -1308,13 +1344,31 @@ export const CircularCarousel = ({
 			>
 				{selectedItem && (
 					<article>
-						<div className="relative bg-zinc-900">
+						<div className="relative min-h-48 bg-[radial-gradient(ellipse_at_center,rgba(8,145,178,0.2),rgba(9,9,11,0.98))]">
 							<img
 								src={selectedItem.src}
 								alt={selectedItem.alt || ""}
-								className="max-h-[55dvh] w-full object-contain"
+								className={
+									selectedImageFailed ||
+									unavailableImages.has(selectedItem.src)
+										? "hidden"
+										: "max-h-[55dvh] w-full object-contain"
+								}
 								decoding="async"
+								onError={() => setSelectedImageFailed(true)}
 							/>
+							{(selectedImageFailed ||
+								unavailableImages.has(selectedItem.src)) && (
+								<div
+									role="img"
+									aria-label={`Imagen no disponible: ${selectedItem.alt || selectedItem.title || "noticia"}`}
+									className="grid min-h-48 place-items-center p-8 text-center sm:min-h-64"
+								>
+									<span className="type-label text-xs tracking-[0.24em] text-cyan-100/65">
+										ARCHIVO HISTÓRICO
+									</span>
+								</div>
+							)}
 							<button
 								ref={closeButtonRef}
 								type="button"
@@ -1326,7 +1380,7 @@ export const CircularCarousel = ({
 							</button>
 						</div>
 						<div className="p-6 sm:p-9">
-							<p className="type-label mb-3 text-xs tracking-[0.24em] text-cyan-200/70">
+							<p className="type-body mb-3 max-w-prose text-sm text-zinc-300 sm:text-base">
 								{selectedItem.subtitle || "Archivo histórico"}
 							</p>
 							<h2
