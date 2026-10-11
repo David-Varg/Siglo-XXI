@@ -2,25 +2,25 @@
 	{
 		"id": 1,
 		"name": "David Vargas",
-		"role": "Lead Team / Desarrollo Frontend",
+		"role": "Lead Developer & Software Architect",
 		"badge": "Lead Team",
 		"avatar": "/David.webp",
 		"github": "https://github.com/David-Varg",
-		"twitter": "https://x.com/hi_alucin"
+		"x": "https://x.com/hi_alucin"
 	},
 	{
 		"id": 2,
 		"name": "Helmuth Ramirez",
-		"role": "Diseño & Redacción de Contenido",
-		"badge": "Contenido",
+		"role": "Búsqueda de Referencias y Assets",
+		"badge": "Assets",
 		"avatar": "/Helmuth.webp",
 		"github": "https://github.com/HelmuthRamirez"
 	},
 	{
 		"id": 3,
 		"name": "Tomas Bautista",
-		"role": "Investigación & Documentación",
-		"badge": "Investigación",
+		"role": "Redacción de contenido",
+		"badge": "Contenido",
 		"avatar": "/Tomas.webp",
 		"github": "https://github.com/tomiu8",
 		"threads": "https://www.threads.com/@_tomif8"

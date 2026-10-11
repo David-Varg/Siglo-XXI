@@ -76,10 +76,10 @@ const data = await getCollection("team")
 							</a>
 						</li>
 					)}
-					{member.data.twitter && member.data.twitter !== "#" && (
+					{member.data.x && member.data.x !== "#" && (
 						<li>
 							<a
-								href={member.data.twitter}
+								href={member.data.x}
 								target="_blank"
 								rel="noopener noreferrer"
 								class="text-zinc-400 hover:text-white transition-colors"
@@ -126,5 +126,4 @@ const data = await getCollection("team")
 			</article>
 		))}
 	</div>
-
 </section>

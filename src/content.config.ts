@@ -8,7 +8,7 @@ const hitosSigloXXI = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		year: z.number(),
-		century: z.enum(["XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI"]),
+		century: z.enum(["XX", "XXI"]),
 		inventor: z.array(
 			z.object({
 				name: z.string(),
@@ -34,7 +34,7 @@ const hitosSigloXXI = defineCollection({
 })
 
 const miembrosDelGrupo = defineCollection({
-	loader: file("./src/content/team/miembros.json"),
+	loader: file("./src/content/team/members.json"),
 	schema: z.object({
 		id: z.union([z.string(), z.number()]),
 		name: z.string().max(50),
@@ -42,7 +42,7 @@ const miembrosDelGrupo = defineCollection({
 		badge: z.string().max(30),
 		avatar: z.string(),
 		github: z.url(),
-		twitter: z.url().optional(),
+		x: z.url().optional(),
 		threads: z.url().optional(),
 	}),
 })
