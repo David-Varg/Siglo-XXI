@@ -463,6 +463,7 @@ export const CircularCarousel = ({
 		captions,
 		reduced,
 	}
+
 	const settingsRef = useRef(settings)
 	settingsRef.current = settings
 
@@ -488,16 +489,20 @@ export const CircularCarousel = ({
 		const next = incomingRef.current
 		const smooth =
 			readyRef.current && next.length === listRef.current.length
+
 		if (!smooth) {
 			setReady(false)
 			setLeaving(null)
 			setList(next)
 		}
+
 		const sources = next.slice(0, 16).map((item) => item.src)
+
 		const load = (src: string) =>
 			new Promise<void>((resolve) => {
 				const image = new Image()
 				image.decoding = "async"
+
 				image.onload = () => {
 					if (image.decode)
 						image.decode().then(
@@ -506,6 +511,7 @@ export const CircularCarousel = ({
 						)
 					else resolve()
 				}
+
 				image.onerror = () => {
 					setUnavailableImages((current) => {
 						if (current.has(src)) return current
@@ -515,11 +521,14 @@ export const CircularCarousel = ({
 					})
 					resolve()
 				}
+
 				image.src = src
 			})
+
 		const timeout = new Promise<void>((resolve) =>
 			setTimeout(resolve, 2400),
 		)
+
 		Promise.race([Promise.all(sources.map(load)), timeout]).then(() => {
 			if (cancelled) return
 			const state = stateRef.current
@@ -542,11 +551,13 @@ export const CircularCarousel = ({
 				wakeRef.current()
 				return
 			}
+
 			state.introDone = false
 			state.intro = null
 			setReady(true)
 			wakeRef.current()
 		})
+
 		return () => {
 			cancelled = true
 		}
@@ -638,6 +649,7 @@ export const CircularCarousel = ({
 			if (!state.intro) return { radius: 1, lift: 0 }
 			const type = state.intro.type
 			const reach = Math.abs(wrap(landing + state.angle))
+
 			if (type === "assemble") {
 				const delay = (reach / 180) * 420
 				const p = easeOut(clamp((elapsed - delay) / 1080, 0, 1))
@@ -815,6 +827,7 @@ export const CircularCarousel = ({
 
 				const world = wrap(base + angle)
 				const facing = Math.cos(world * TO_RAD)
+
 				if (s.layout.inward)
 					card.style.visibility = Math.abs(world) > 86 ? "hidden" : ""
 				const fade = s.depthFade * Math.pow((1 - facing) / 2, 1.25)
@@ -960,6 +973,7 @@ export const CircularCarousel = ({
 		if (!root) return
 		const rect = root.getBoundingClientRect()
 		const pointer = stateRef.current.pointer
+
 		pointer.x = clamp(
 			((event.clientX - rect.left) / rect.width) * 2 - 1,
 			-1,
@@ -976,6 +990,7 @@ export const CircularCarousel = ({
 		const state = stateRef.current
 		state.suppressClick = false
 		if (!draggable || event.button !== 0) return
+
 		state.press = {
 			id: event.pointerId,
 			x: event.clientX,
@@ -993,16 +1008,19 @@ export const CircularCarousel = ({
 			state.pointer.inside = true
 			updatePointer(event)
 		}
+
 		const press = state.press
 		if (!press || press.id !== event.pointerId) {
 			wakeRef.current()
 			return
 		}
+
 		const s = settingsRef.current
 		const delta =
 			s.axis === "x" ? event.clientY - press.y : event.clientX - press.x
 		const cross =
 			s.axis === "x" ? event.clientX - press.x : event.clientY - press.y
+
 		if (!press.moved) {
 			if (Math.abs(delta) < DRAG_THRESHOLD) return
 			if (
@@ -1012,12 +1030,14 @@ export const CircularCarousel = ({
 				state.press = null
 				return
 			}
+
 			press.moved = true
 			press.origin = delta
 			state.drag = true
 			state.target = null
 			state.velocity = 0
 			setDragging(true)
+
 			try {
 				rootRef.current?.setPointerCapture(event.pointerId)
 			} catch {
@@ -1039,8 +1059,10 @@ export const CircularCarousel = ({
 		const state = stateRef.current
 		const press = state.press
 		if (!press || press.id !== event.pointerId) return
+
 		state.press = null
 		if (!press.moved) return
+
 		state.drag = false
 		setDragging(false)
 		state.suppressClick = true
@@ -1048,6 +1070,7 @@ export const CircularCarousel = ({
 		const first = press.samples[0]
 		const last = press.samples[press.samples.length - 1]
 		const span = (last.time - first.time) / 1000
+
 		const velocity =
 			span > 0.008
 				? clamp((last.angle - first.angle) / span, -1400, 1400)
@@ -1343,7 +1366,7 @@ export const CircularCarousel = ({
 				}}
 			>
 				{selectedItem && (
-					<article>
+					<article className="border-none cursor-default">
 						<div className="relative min-h-48 bg-[radial-gradient(ellipse_at_center,rgba(8,145,178,0.2),rgba(9,9,11,0.98))]">
 							<img
 								src={selectedItem.src}
@@ -1372,14 +1395,14 @@ export const CircularCarousel = ({
 							<button
 								ref={closeButtonRef}
 								type="button"
-								className="absolute right-3 top-3 grid size-11 place-items-center rounded-full border border-white/20 bg-zinc-950/75 text-2xl text-white shadow-lg backdrop-blur transition-colors hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
+								className="cursor-pointer absolute right-3 top-3 grid size-11 place-items-center rounded-full border border-white/20 bg-zinc-950/75 text-2xl text-white shadow-lg backdrop-blur transition-colors hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
 								aria-label="Cerrar noticia"
 								onClick={() => dialogRef.current?.close()}
 							>
 								<span aria-hidden="true">×</span>
 							</button>
 						</div>
-						<div className="p-6 sm:p-9">
+						<div className="flex flex-col p-6 sm:p-9">
 							<p className="type-body mb-3 max-w-prose text-sm text-zinc-300 sm:text-base">
 								{selectedItem.subtitle || "Archivo histórico"}
 							</p>
@@ -1397,7 +1420,7 @@ export const CircularCarousel = ({
 							{selectedItem.url && (
 								<a
 									href={selectedItem.url}
-									className="type-label mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-cyan-300/30 bg-cyan-300/10 px-5 py-3 text-xs text-cyan-100 transition-colors hover:border-cyan-200/60 hover:bg-cyan-300/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
+									className="type-label mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-cyan-300/30 bg-cyan-300/10 px-5 py-3 text-xs text-cyan-100 transition-colors hover:border-cyan-200/60 hover:bg-cyan-300/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
 								>
 									Leer artículo
 									<span aria-hidden="true">↗</span>
