@@ -16,6 +16,8 @@ const items = entries.map((e) => {
 		alt: e.data.title,
 		title: e.data.title,
 		subtitle: e.data.description,
+		category: e.data.category,
+		url: `/blog/${e.id}`,
 	}
 })
 ---

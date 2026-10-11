@@ -5,6 +5,8 @@ export interface CircularCarouselItem {
 	alt?: string
 	title?: string
 	subtitle?: string
+	category?: string
+	url?: string
 }
 
 export type CircularCarouselPreset = "cylinder" | "orbit" | "wheel" | "panorama"

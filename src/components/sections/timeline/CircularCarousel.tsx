@@ -1389,6 +1389,20 @@ export const CircularCarousel = ({
 							>
 								{selectedItem.title || selectedItem.alt}
 							</h2>
+							{selectedItem.category && (
+								<p className="type-label mt-4 inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[10px] text-cyan-100 sm:text-xs">
+									{selectedItem.category}
+								</p>
+							)}
+							{selectedItem.url && (
+								<a
+									href={selectedItem.url}
+									className="type-label mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-cyan-300/30 bg-cyan-300/10 px-5 py-3 text-xs text-cyan-100 transition-colors hover:border-cyan-200/60 hover:bg-cyan-300/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
+								>
+									Leer artículo
+									<span aria-hidden="true">↗</span>
+								</a>
+							)}
 						</div>
 					</article>
 				)}
