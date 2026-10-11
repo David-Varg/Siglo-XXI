@@ -3,6 +3,8 @@ import type * as THREE_NS from "three"
 let animationFrameId: number
 let onMouseMove: (e: MouseEvent) => void
 let onResize: () => void
+let onSceneVisibilityChange: () => void
+let sceneObserver: IntersectionObserver | undefined
 
 const initScene = async () => {
 	const container = document.getElementById("hero-canvas-container")
@@ -32,8 +34,17 @@ const initScene = async () => {
 	if (animationFrameId) cancelAnimationFrame(animationFrameId)
 	if (onMouseMove) window.removeEventListener("mousemove", onMouseMove)
 	if (onResize) window.removeEventListener("resize", onResize)
+	if (onSceneVisibilityChange)
+		document.removeEventListener(
+			"visibilitychange",
+			onSceneVisibilityChange,
+		)
+	sceneObserver?.disconnect()
 
 	const scene = new THREE.Scene()
+	const compactDevice =
+		window.matchMedia("(max-width: 767px)").matches ||
+		navigator.hardwareConcurrency <= 4
 	const camera = new THREE.PerspectiveCamera(
 		60,
 		window.innerWidth / window.innerHeight,
@@ -46,13 +57,16 @@ const initScene = async () => {
 	const renderer = new THREE.WebGLRenderer({
 		canvas,
 		alpha: true,
-		antialias: true,
+		antialias: !compactDevice,
+		powerPreference: "high-performance",
 	})
 
 	renderer.setSize(window.innerWidth, window.innerHeight)
-	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+	renderer.setPixelRatio(
+		Math.min(window.devicePixelRatio, compactDevice ? 1 : 1.5),
+	)
 
-	renderer.shadowMap.enabled = true
+	renderer.shadowMap.enabled = !compactDevice
 	renderer.shadowMap.type = THREE.PCFShadowMap
 
 	const ambientLight = new THREE.AmbientLight(0x07101e, 0.78)
@@ -61,7 +75,7 @@ const initScene = async () => {
 	const sunLight = new THREE.DirectionalLight(0xffd08a, 6.5)
 	sunLight.position.set(-54, 18, -408)
 	sunLight.target.position.set(0, 0, -130)
-	sunLight.castShadow = true
+	sunLight.castShadow = !compactDevice
 	scene.add(sunLight)
 	scene.add(sunLight.target)
 
@@ -71,12 +85,12 @@ const initScene = async () => {
 
 	const fillLight = new THREE.DirectionalLight(0x38bdf8, 2.0)
 	fillLight.position.set(-5, -3, 3)
-	fillLight.castShadow = true
+	fillLight.castShadow = !compactDevice
 	scene.add(fillLight)
 
 	const rimLight = new THREE.DirectionalLight(0xa855f7, 3.5)
 	rimLight.position.set(0, -6, -4)
-	rimLight.castShadow = true
+	rimLight.castShadow = !compactDevice
 	scene.add(rimLight)
 
 	// Definir variables
@@ -383,7 +397,7 @@ const initScene = async () => {
 		},
 	)
 
-	const starCount = 1800
+	const starCount = compactDevice ? 1100 : 1800
 	const starPositions = new Float32Array(starCount * 3)
 
 	for (let i = 0; i < starCount; i++) {
@@ -410,7 +424,7 @@ const initScene = async () => {
 		}),
 	)
 
-	const streakCount = 320
+	const streakCount = compactDevice ? 160 : 320
 	const streakPositions = new Float32Array(streakCount * 6)
 	for (let i = 0; i < streakCount; i++) {
 		const x = (Math.random() - 0.5) * 70
@@ -462,8 +476,11 @@ const initScene = async () => {
 		"(prefers-reduced-motion: reduce)",
 	).matches
 
+	let sceneVisible = true
 	const animate = () => {
-		if (!motionReduced) animationFrameId = requestAnimationFrame(animate)
+		animationFrameId = 0
+		if (!motionReduced && sceneVisible && !document.hidden)
+			animationFrameId = requestAnimationFrame(animate)
 
 		starfield.rotation.z += 0.00088
 		sun.rotation.y += 0.024
@@ -483,6 +500,32 @@ const initScene = async () => {
 
 		renderer.render(scene, camera)
 	}
+
+	const resumeAnimation = () => {
+		if (
+			!motionReduced &&
+			sceneVisible &&
+			!document.hidden &&
+			!animationFrameId
+		)
+			animationFrameId = requestAnimationFrame(animate)
+	}
+	onSceneVisibilityChange = () => {
+		if (document.hidden) {
+			cancelAnimationFrame(animationFrameId)
+			animationFrameId = 0
+		} else resumeAnimation()
+	}
+	document.addEventListener("visibilitychange", onSceneVisibilityChange)
+	sceneObserver = new IntersectionObserver(([entry]) => {
+		sceneVisible = entry.isIntersecting
+		if (sceneVisible) resumeAnimation()
+		else {
+			cancelAnimationFrame(animationFrameId)
+			animationFrameId = 0
+		}
+	})
+	sceneObserver.observe(container)
 
 	animate()
 
