@@ -15,6 +15,11 @@ import type {
 	CircularCarouselPreset,
 	CircularCarouselProps,
 } from "@/types/carousel"
+import {
+	clampCarouselValue as clamp,
+	getActiveCarouselIndex,
+	wrapCarouselAngle as wrap,
+} from "@/lib/carouselMath"
 
 type Vec3 = [number, number, number]
 
@@ -75,6 +80,7 @@ interface CarouselState {
 	shift: number
 	drop: number
 	last: number
+	modalOpen: boolean
 }
 
 interface Settings {
@@ -248,9 +254,6 @@ const SWAP_LENGTH = 700
 const SWAP_SPREAD = 420
 const TO_RAD = Math.PI / 180
 
-const clamp = (value: number, min: number, max: number) =>
-	Math.min(max, Math.max(min, value))
-const wrap = (degrees: number) => ((((degrees + 180) % 360) + 360) % 360) - 180
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 4)
 const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, 5)
 
@@ -336,6 +339,7 @@ export const CircularCarousel = ({
 	innerShade = 0.6,
 	cornerRadius = 12,
 	captions = false,
+	ariaLabel = "Carrusel de noticias",
 	onChange,
 	onItemClick,
 	className = "",
@@ -388,6 +392,10 @@ export const CircularCarousel = ({
 	}, [along, axis, curveValue, layout.inward, radius])
 
 	const rootRef = useRef<HTMLDivElement>(null)
+	const dialogRef = useRef<HTMLDialogElement>(null)
+	const closeButtonRef = useRef<HTMLButtonElement>(null)
+	const [selectedItem, setSelectedItem] =
+		useState<CircularCarouselItem | null>(null)
 	const stageRef = useRef<HTMLDivElement>(null)
 	const cameraRef = useRef<HTMLDivElement>(null)
 	const ringRef = useRef<HTMLDivElement>(null)
@@ -422,6 +430,7 @@ export const CircularCarousel = ({
 		shift: 0,
 		drop: 0,
 		last: 0,
+		modalOpen: false,
 	})
 
 	const settings: Settings = {
@@ -635,6 +644,11 @@ export const CircularCarousel = ({
 		}
 
 		const advance = (s: Settings, dt: number, now: number) => {
+			if (state.modalOpen) {
+				state.last = 0
+				return false
+			}
+
 			if (!state.introDone && readyRef.current) {
 				if (!state.intro)
 					if (s.intro === "none") state.introDone = true
@@ -795,9 +809,7 @@ export const CircularCarousel = ({
 				card.style.setProperty("--cc-depth", fade.toFixed(3))
 			}
 
-			const index =
-				((Math.round(-state.angle / s.step) % s.count) + s.count) %
-					s.count || 0
+			const index = getActiveCarouselIndex(state.angle, s.step, s.count)
 			if (index !== activeRef.current) {
 				activeRef.current = index
 				setActive(index)
@@ -900,6 +912,18 @@ export const CircularCarousel = ({
 		wakeRef.current()
 	})
 
+	useEffect(() => {
+		const dialog = dialogRef.current
+		if (!dialog || !selectedItem || dialog.open) return
+
+		const state = stateRef.current
+		state.modalOpen = true
+		state.target = null
+		state.velocity = 0
+		dialog.showModal()
+		closeButtonRef.current?.focus()
+	}, [selectedItem])
+
 	const focusIndex = useCallback((index: number) => {
 		const state = stateRef.current
 		const s = settingsRef.current
@@ -984,7 +1008,9 @@ export const CircularCarousel = ({
 			setDragging(true)
 			try {
 				rootRef.current?.setPointerCapture(event.pointerId)
-			} catch {}
+			} catch {
+				// The pointer may be released between the move and capture events.
+			}
 		}
 		const perPixel = 180 / (Math.PI * s.radius * state.fit)
 		state.angle =
@@ -1053,6 +1079,7 @@ export const CircularCarousel = ({
 		if (!card) return
 		const index = Number(card.getAttribute("data-cc-index"))
 		if (focusOnClick) focusIndex(index)
+		setSelectedItem(list[index])
 		onItemClick?.(list[index], index)
 	}
 
@@ -1063,15 +1090,17 @@ export const CircularCarousel = ({
 		else if (event.key === backward) stepBy(-1)
 		else if (event.key === "Home") focusIndex(0)
 		else if (event.key === "End") focusIndex(count - 1)
-		else if (event.key === "Enter" || event.key === " ")
-			onItemClick?.(list[activeRef.current], activeRef.current)
-		else return
+		else if (event.key === "Enter" || event.key === " ") {
+			const index = activeRef.current
+			setSelectedItem(list[index])
+			onItemClick?.(list[index], index)
+		} else return
 		event.preventDefault()
 	}
 
 	const current = list[active] || list[0]
 	const label = current
-		? current.title || current.alt || `Image ${active + 1}`
+		? current.title || current.alt || `Noticia ${active + 1}`
 		: ""
 
 	const renderTile = (
@@ -1111,7 +1140,7 @@ export const CircularCarousel = ({
 
 		const flip = axis === "x" ? " rotateX(180deg)" : " rotateY(180deg)"
 		const gone = leaving?.items[index]
-		
+
 		return (
 			<div
 				key={`${back ? "b" : "f"}${tile.index}`}
@@ -1171,7 +1200,7 @@ export const CircularCarousel = ({
 			}
 			role="region"
 			aria-roledescription="carousel"
-			aria-label="Image carousel"
+			aria-label={ariaLabel}
 			tabIndex={0}
 			data-axis={axis}
 			data-shape={shape}
@@ -1220,7 +1249,7 @@ export const CircularCarousel = ({
 									data-cc-index={index}
 									role="group"
 									aria-roledescription="slide"
-									aria-label={`${item.title || item.alt || `Image ${index + 1}`}, ${index + 1} of ${count}`}
+									aria-label={`${item.title || item.alt || `Noticia ${index + 1}`}, ${index + 1} de ${count}`}
 								>
 									{tiles.map((tile) =>
 										renderTile(item, tile, false, index),
@@ -1259,8 +1288,57 @@ export const CircularCarousel = ({
 				</div>
 			)}
 			<div className="sr-only" aria-live="polite" aria-atomic="true">
-				{`${label}, ${active + 1} of ${count}`}
+				{`${label}, ${active + 1} de ${count}`}
 			</div>
+			<dialog
+				ref={dialogRef}
+				className="m-auto max-h-[min(88dvh,48rem)] w-[min(92vw,56rem)] overflow-y-auto rounded-3xl border border-white/15 bg-zinc-950/95 p-0 text-white shadow-[0_32px_120px_rgba(0,0,0,0.7)] backdrop:bg-zinc-950/75 backdrop:backdrop-blur-md open:animate-in open:fade-in open:zoom-in-95 open:duration-200 motion-reduce:open:animate-none"
+				aria-labelledby="news-dialog-title"
+				onClose={() => {
+					stateRef.current.modalOpen = false
+					stateRef.current.holdUntil = performance.now() + 1800
+					setSelectedItem(null)
+					rootRef.current?.focus()
+					wakeRef.current()
+				}}
+				onClick={(event) => {
+					if (event.target === event.currentTarget)
+						dialogRef.current?.close()
+				}}
+			>
+				{selectedItem && (
+					<article>
+						<div className="relative bg-zinc-900">
+							<img
+								src={selectedItem.src}
+								alt={selectedItem.alt || ""}
+								className="max-h-[55dvh] w-full object-contain"
+								decoding="async"
+							/>
+							<button
+								ref={closeButtonRef}
+								type="button"
+								className="absolute right-3 top-3 grid size-11 place-items-center rounded-full border border-white/20 bg-zinc-950/75 text-2xl text-white shadow-lg backdrop-blur transition-colors hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
+								aria-label="Cerrar noticia"
+								onClick={() => dialogRef.current?.close()}
+							>
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+						<div className="p-6 sm:p-9">
+							<p className="type-label mb-3 text-xs tracking-[0.24em] text-cyan-200/70">
+								{selectedItem.subtitle || "Archivo histórico"}
+							</p>
+							<h2
+								id="news-dialog-title"
+								className="type-heading text-2xl sm:text-4xl"
+							>
+								{selectedItem.title || selectedItem.alt}
+							</h2>
+						</div>
+					</article>
+				)}
+			</dialog>
 		</div>
 	)
 }

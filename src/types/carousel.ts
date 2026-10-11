@@ -40,5 +40,6 @@ export interface CircularCarouselProps {
 	onChange?: (index: number) => void
 	onItemClick?: (item: CircularCarouselItem, index: number) => void
 	className?: string
+	ariaLabel?: string
 	style?: CSSProperties
 }
