@@ -259,12 +259,14 @@ const initHeroJourney = () => {
 }
 
 const initTeamAndFooterAnimations = () => {
+	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
 	const mainTimeline = gsap.timeline({
 		scrollTrigger: {
 			trigger: "#section-team",
 			start: "top 80%",
 			end: "bottom bottom",
-			toggleActions: "play reverse play reverse",
+			toggleActions: "play none none reverse",
 		},
 	})
 
