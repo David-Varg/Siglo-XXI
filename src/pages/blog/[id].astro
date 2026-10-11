@@ -2,14 +2,11 @@
 // Layouts
 import LayoutOfPages from "@layouts/Layout.astro"
 
-// Interactive component
-import { AudioPlayer } from "@components/AudioPlayer"
-
 // Static components
-import Header from "@components/contentBlog/Header.astro"
-import Aside from "@components/contentBlog/AsideInfo.astro"
-import MainConcent from "@components/contentBlog/Content.astro"
-import Footer from "@components/Footer.astro"
+import Header from "@components/blog/BlogHeader.astro"
+import Aside from "@components/blog/BlogMetadata.astro"
+import MainConcent from "@components/blog/BlogContent.astro"
+import Footer from "@components/layout/Footer.astro"
 
 import type { GetStaticPaths } from "astro"
 import { getCollection, render } from "astro:content"
@@ -135,7 +132,7 @@ const epochConfig = isRetroEpoch
 				</svg>
 			</a>
 		</section>
-		
+
 		<Footer />
 	</div>
 </LayoutOfPages>
@@ -185,28 +182,26 @@ const epochConfig = isRetroEpoch
 			)
 
 			ScrollTrigger.batch(articleElements, {
-				start: "top 88%",
+				start: "top 90%",
 				once: false,
 				onEnter: (batch) => {
 					gsap.fromTo(
 						batch,
-						{ y: 35, autoAlpha: 0 },
+						{ y: 45, autoAlpha: 0 },
 						{
 							y: 0,
 							autoAlpha: 1,
-							duration: 0.7,
+							duration: 0.9,
 							stagger: 0.15,
 							ease: "power2.out",
-							overwrite: "auto",
 						},
 					)
 				},
 				onLeaveBack: (batch) => {
 					gsap.to(batch, {
-						y: 35,
+						y: 45,
 						autoAlpha: 0,
 						duration: 0.4,
-						overwrite: "auto",
 					})
 				},
 			})

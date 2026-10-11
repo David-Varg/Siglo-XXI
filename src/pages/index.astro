@@ -1,21 +1,21 @@
 ---
 // Componentes del Hero y Visuales
-import Hero from "@components/main/hero/Hero.astro"
-import Loader from "@components/Loader.astro"
+import Hero from "@components/sections/hero/Hero.astro"
+import Loader from "@components/layout/Loader.astro"
 
 // Componentes del Timeline y Búsqueda
-import DoubleTrackTimeline from "@components/main/timeline/DoubleTrackTimeline.astro"
+import Navbar from "@components/navbar/Navbar.astro"
+import TimelineSection from "@components/sections/timeline/TimelineSection.astro"
 
 // Componente del Equipo
-import TeamParticles from "@components/main/Team/TeamBackground.astro"
-import Cards from "@components/main/Team/Cards.astro"
+import TeamParticles from "@components/sections/team/TeamParticleBackground.astro"
+import TeamCards from "@components/sections/team/TeamCards.astro"
 
 // Componente del Footer
-import Footer from "@components/Footer.astro"
+import Footer from "@components/layout/Footer.astro"
 
 // Layout
 import Layout from "@layouts/Layout.astro"
-import { SearchBar } from "@/components/navbar/SearchBar"
 ---
 
 <Layout title="Siglo XXI">
@@ -43,57 +43,11 @@ import { SearchBar } from "@/components/navbar/SearchBar"
 			></div>
 		</section>
 
-		<header
-			id="journey-nav"
-			inert
-			class="fixed inset-x-0 top-0 z-40 px-4 pt-4 opacity-0 invisible"
-		>
-			<nav
-				aria-label="Navegación principal"
-				class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-zinc-950/55 px-4 py-3 shadow-2xl shadow-black/20 backdrop-blur-xl lg:flex-nowrap sm:gap-4 sm:px-6"
-			>
-				<a
-					href="#hero-section"
-					class="flex items-center gap-3 font-title text-sm font-bold tracking-wide text-white sm:text-base"
-				>
-					<span
-						aria-hidden="true"
-						class="grid size-8 place-items-center rounded-xl border border-cyan-300/25 bg-cyan-300/10 text-cyan-200"
-					>
-						XXI
-					</span>
-					<span>
-						El Siglo <span class="text-cyan-200">XXI</span>
-					</span>
-				</a>
-				<div class="journey-nav-links relative isolate flex items-center gap-1 sm:gap-2">
-					<span
-						id="nav-hover-indicator"
-						aria-hidden="true"
-						class="pointer-events-none absolute inset-y-0 left-0 z-0 w-0 rounded-lg bg-white/10 opacity-0"
-					></span>
-					<a
-						href="#section-timeline"
-						class="relative z-10 rounded-lg px-3 py-2 text-xs text-zinc-200 transition-colors hover:text-white focus-visible:text-white sm:text-sm"
-					>
-						Línea de tiempo
-					</a>
-					<a
-						href="#section-team"
-						class="relative z-10 rounded-lg px-3 py-2 text-xs text-zinc-200 transition-colors hover:text-white focus-visible:text-white sm:text-sm"
-					>
-						Equipo
-					</a>
-				</div>
-				<div class="order-3 w-full sm:order-none sm:w-80 lg:w-96">
-					<SearchBar client:load />
-				</div>
-			</nav>
-		</header>
+		<Navbar />
 
 		<section
 			id="section-timeline"
-			class="relative z-30 mt-[-100svh] isolate flex min-h-svh w-full items-center overflow-hidden bg-[#0d0b12] px-4 py-16 sm:py-20 motion-reduce:mt-0"
+			class="relative z-30 mt-[-100svh] isolate flex min-h-svh w-full items-center overflow-hidden bg-zinc-950 px-4 py-16 sm:py-20 motion-reduce:mt-0"
 		>
 			<div
 				aria-hidden="true"
@@ -101,13 +55,9 @@ import { SearchBar } from "@/components/navbar/SearchBar"
 			></div>
 			<div
 				aria-hidden="true"
-				class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_100%,rgba(217,119,6,0.12),transparent_48%),radial-gradient(ellipse_at_15%_20%,rgba(8,145,178,0.12),transparent_38%)]"
-			></div>
-			<div
-				aria-hidden="true"
 				class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-linear-to-r from-transparent via-cyan-200/30 to-transparent"
 			></div>
-			<DoubleTrackTimeline />
+			<TimelineSection />
 		</section>
 
 		<section
@@ -115,7 +65,7 @@ import { SearchBar } from "@/components/navbar/SearchBar"
 			class="bg-zinc-950/90 backdrop-blur-lg px-4 py-10"
 		>
 			<TeamParticles />
-			<Cards />
+			<TeamCards />
 			<Footer />
 		</section>
 	</main>
@@ -133,6 +83,7 @@ import { SearchBar } from "@/components/navbar/SearchBar"
 	window.addEventListener("touchstart", cancelNavigationTween, {
 		passive: true,
 	})
+
 	window.addEventListener("keydown", (event) => {
 		if (
 			[
@@ -157,7 +108,7 @@ import { SearchBar } from "@/components/navbar/SearchBar"
 
 		if (!hero || !nav || !clouds) return
 		if (hero.dataset.journeyBound === "true") return
-		
+
 		hero.dataset.journeyBound = "true"
 
 		const flight = { progress: 0 }
@@ -200,7 +151,7 @@ import { SearchBar } from "@/components/navbar/SearchBar"
 				const y = Math.max(
 					0,
 					window.scrollY + target.getBoundingClientRect().top,
-				) 
+				)
 
 				if (reducedMotion) window.scrollTo(0, y)
 				else
@@ -310,6 +261,11 @@ import { SearchBar } from "@/components/navbar/SearchBar"
 			0.12,
 		)
 		sequence.to(
+			"#audio-player",
+			{ autoAlpha: 0.18, duration: 0.16, ease: "none" },
+			0.12,
+		)
+		sequence.to(
 			"#hero-scroll-hint",
 			{ autoAlpha: 0, y: 12, duration: 0.1, ease: "none" },
 			0.08,
@@ -354,12 +310,6 @@ import { SearchBar } from "@/components/navbar/SearchBar"
 				invalidateOnRefresh: true,
 			},
 		})
-			.fromTo(
-				"#section-timeline",
-				{ y: 0, autoAlpha: 1 },
-				{ y: -42, autoAlpha: 0.45, ease: "none" },
-				0,
-			)
 			.fromTo(
 				"#section-team",
 				{ y: 54, autoAlpha: 0.45 },
