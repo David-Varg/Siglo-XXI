@@ -238,21 +238,6 @@ const initHeroJourney = () => {
 	)
 	gsap.timeline({
 		scrollTrigger: {
-			trigger: "#section-team",
-			start: "top bottom",
-			end: "top 68%",
-			scrub: 0.8,
-			invalidateOnRefresh: true,
-		},
-	}).fromTo(
-		"#section-team",
-		{ y: 54, autoAlpha: 0.45 },
-		{ y: 0, autoAlpha: 1, ease: "none" },
-		0,
-	)
-
-	gsap.timeline({
-		scrollTrigger: {
 			trigger: "#timeline-console [data-carousel-stage]",
 			start: "top 92%",
 			end: "bottom 12%",
