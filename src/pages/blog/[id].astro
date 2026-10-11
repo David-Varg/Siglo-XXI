@@ -45,7 +45,9 @@ const {
 } = blog.data
 
 const isRetroEpoch = year < 1950
-const epochTheme = isRetroEpoch ? "retro-epoch" : "modern-epoch"
+const epochTheme = isRetroEpoch
+	? "grayscale contrast-110 [&_.text-cyan-400]:text-gray-300"
+	: ""
 
 const epochConfig = isRetroEpoch
 	? {
