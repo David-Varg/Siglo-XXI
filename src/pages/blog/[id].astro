@@ -84,12 +84,13 @@ const epochConfig = isRetroEpoch
 
 			<div
 				id="resto"
-				class="flex justify-around lg:grid-cols-12 gap-12 mt-8"
+				class="mt-8 grid grid-cols-1 items-start gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-12"
 			>
 				<Aside
 					inventor={inventor}
 					precededBy={precededBy}
 					impactScore={impactScore}
+					category={category}
 					barColor={epochConfig.barColor}
 				/>
 				<MainConcent

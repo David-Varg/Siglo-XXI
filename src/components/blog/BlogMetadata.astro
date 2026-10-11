@@ -5,13 +5,18 @@ const {
 	inventor,
 	precededBy,
 	impactScore,
+	category,
 	barColor = "emerald",
 }: BlogAsideInfoProps = Astro.props
 ---
 
-<aside id="aside-info" class="lg:col-span-4">
-	<div class="lg:sticky lg:top-8 space-y-6 bg-slate-900/80 border border-cyan-500/30 p-6 rounded-2xl backdrop-blur-xl shadow-[0_0_35px_rgba(6,182,212,0.1)] relative overflow-hidden">
+<aside id="aside-info" class="order-2 min-w-0 lg:order-1 lg:col-span-4">
+	<div class="space-y-6 relative overflow-hidden rounded-2xl border border-cyan-500/30 bg-slate-900/80 p-4 shadow-[0_0_35px_rgba(6,182,212,0.1)] backdrop-blur-xl sm:p-6 lg:sticky lg:top-8">
 		<div class="absolute -top-12 -right-12 w-24 h-24 bg-cyan-500/20 rounded-full blur-2xl pointer-events-none"></div>
+		<div class="relative inline-flex max-w-full items-center rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 type-label text-[10px] text-cyan-100 sm:text-xs">
+			<span class="mr-2 text-cyan-300">CATEGORÍA</span>
+			<span class="truncate">{category}</span>
+		</div>
 
 		<div>
 			<h3 class="type-label mb-4 flex items-center gap-2 text-[10px] text-cyan-400">

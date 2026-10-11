@@ -17,6 +17,7 @@ export interface BlogAsideInfoProps {
 	}[]
 	precededBy: string[]
 	impactScore: number
+	category: string
 	barColor?: string
 }
 
