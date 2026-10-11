@@ -92,6 +92,17 @@
 		from { opacity: 0; }
 		to { opacity: 1; }
 	}
+
+	@keyframes card-enter {
+		from {
+			opacity: 0;
+			transform: translateY(0.75rem) scale(0.96);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
 }
 
 @utility type-display {

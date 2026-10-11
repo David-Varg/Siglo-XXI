@@ -14,8 +14,7 @@ const data = await getCollection("team")
 		</h2>
 		<p class="type-body text-zinc-400 sm:text-xl">
 			Estudiantes encargados del desarrollo, investigación y diseño del
-			portal{" "}
-			<strong class="block text-zinc-300">"El Siglo XXI"</strong>
+			portal <strong class="block text-zinc-300">"El Siglo XXI"</strong>
 		</p>
 	</header>
 
@@ -45,6 +44,8 @@ const data = await getCollection("team")
 						class="grayscale group-hover:filter-none w-28 h-28 lg:w-32 lg:h-32 rounded-full object-cover border-2 border-zinc-700 group-hover:border-indigo-500 transition-all duration-300 shadow-lg"
 						src={member.data.avatar}
 						alt={`Foto de ${member.data.name}`}
+						loading="lazy"
+						decoding="async"
 					/>
 				</div>
 
@@ -147,11 +148,14 @@ const data = await getCollection("team")
 
 	<dialog
 		id="team-card-dialog"
-		class="m-auto w-[min(92vw,32rem)] rounded-3xl border border-white/15 bg-zinc-950/85 p-0 text-white shadow-2xl backdrop:bg-zinc-950/70 backdrop:backdrop-blur-md"
+		class="m-auto w-[min(92vw,32rem)] rounded-3xl border border-white/15 bg-zinc-950/85 p-0 text-white shadow-2xl backdrop:bg-zinc-950/70 backdrop:backdrop-blur-md open:animate-[card-enter_220ms_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none"
 		aria-labelledby="team-dialog-name"
 	>
 		<div class="relative overflow-hidden rounded-3xl p-7 sm:p-9">
-			<div aria-hidden="true" class="pointer-events-none absolute -right-12 -top-16 size-48 rounded-full bg-indigo-500/20 blur-3xl"></div>
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute -right-12 -top-16 size-48 rounded-full bg-indigo-500/20 blur-3xl"
+			></div>
 			<button
 				type="button"
 				class="absolute right-4 top-4 z-10 grid size-10 place-items-center rounded-full border border-white/10 bg-white/5 text-xl text-zinc-300 transition hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300"
@@ -161,14 +165,47 @@ const data = await getCollection("team")
 				<span aria-hidden="true">×</span>
 			</button>
 			<div class="relative flex flex-col items-center text-center">
-				<img data-dialog-avatar class="mb-5 size-28 rounded-full border-2 border-indigo-300/40 object-cover shadow-[0_0_36px_rgba(99,102,241,0.2)]" alt="" />
-				<span data-dialog-badge class="type-label mb-3 rounded-full border border-indigo-400/20 bg-indigo-500/10 px-3 py-1 text-[10px] text-indigo-200"></span>
-				<h3 id="team-dialog-name" data-dialog-name class="type-heading text-3xl text-white sm:text-4xl"></h3>
+				<img
+					data-dialog-avatar
+					class="mb-5 size-28 rounded-full border-2 border-indigo-300/40 object-cover shadow-[0_0_36px_rgba(99,102,241,0.2)]"
+					alt=""
+					decoding="async"
+				/>
+				<span
+					data-dialog-badge
+					class="type-label mb-3 rounded-full border border-indigo-400/20 bg-indigo-500/10 px-3 py-1 text-[10px] text-indigo-200"
+				></span>
+				<h3
+					id="team-dialog-name"
+					data-dialog-name
+					class="type-heading text-3xl text-white sm:text-4xl"
+				></h3>
 				<p data-dialog-role class="type-body mt-2 text-zinc-300"></p>
 				<div class="mt-7 flex flex-wrap justify-center gap-3">
-					<a data-dialog-github class="type-label rounded-full border border-white/10 px-4 py-2 text-[10px] text-zinc-200 transition hover:border-indigo-300/50 hover:text-white" target="_blank" rel="noopener noreferrer">GitHub</a>
-					<a data-dialog-twitter class="type-label rounded-full border border-white/10 px-4 py-2 text-[10px] text-zinc-200 transition hover:border-indigo-300/50 hover:text-white" target="_blank" rel="noopener noreferrer">X</a>
-					<a data-dialog-threads class="type-label rounded-full border border-white/10 px-4 py-2 text-[10px] text-zinc-200 transition hover:border-indigo-300/50 hover:text-white" target="_blank" rel="noopener noreferrer">Threads</a>
+					<a
+						data-dialog-github
+						class="type-label rounded-full border border-white/10 px-4 py-2 text-[10px] text-zinc-200 transition hover:border-indigo-300/50 hover:text-white"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						GitHub
+					</a>
+					<a
+						data-dialog-twitter
+						class="type-label rounded-full border border-white/10 px-4 py-2 text-[10px] text-zinc-200 transition hover:border-indigo-300/50 hover:text-white"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						X
+					</a>
+					<a
+						data-dialog-threads
+						class="type-label rounded-full border border-white/10 px-4 py-2 text-[10px] text-zinc-200 transition hover:border-indigo-300/50 hover:text-white"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Threads
+					</a>
 				</div>
 			</div>
 		</div>
