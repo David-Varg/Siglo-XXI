@@ -8,6 +8,7 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build",
+		"test:unit": "node --experimental-strip-types --test src/lib/carouselMath.test.mjs",
 		"preview": "astro preview",
 		"astro": "astro",
 		"devtoolbar:disable": "astro preferences disable devToolbar",
