@@ -5,11 +5,11 @@ const { description, heroImage, model3d, isRetro }: BlogContentProps = Astro.pro
 ---
 
 <main id="main-content" class="lg:col-span-8">
-	<div class="prose prose-invert prose-cyan font-mono relative">
+	<div class="prose prose-invert prose-cyan font-body relative">
 		<section class="flex max-sm:flex-col justify-between items-center mb-12 gap-8 p-6 bg-slate-900/50 rounded-2xl border border-white/5 relative overflow-hidden">
 			<div class="absolute inset-0 bg-linear-to-br from-cyan-900/20 to-transparent pointer-events-none"></div>
 
-			<p class="text-xl text-gray-300 font-body relative z-10">
+			<p class="type-body relative z-10 text-xl text-gray-300">
 				{description}
 			</p>
 
@@ -44,9 +44,4 @@ const { description, heroImage, model3d, isRetro }: BlogContentProps = Astro.pro
 	</div>
 </main>
 
-{model3d && <script>
-	import * as THREE from "three"
-	import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 
-	// Me da paja hacerlo aún
-</script>}

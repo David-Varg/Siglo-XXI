@@ -59,6 +59,39 @@
 			filter: brightness(1.3);
 		}
 	}
+
+	@keyframes pixel-art {
+		to {
+			transform: translateY(-5px);
+		}
+	}
+
+	@keyframes loader-scan {
+		to {
+			transform: translateX(125%);
+		}
+	}
+
+	@keyframes circular-carousel-title {
+		from {
+			opacity: 0;
+			transform: translateY(8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes circular-carousel-leave {
+		from { opacity: 1; }
+		to { opacity: 0; }
+	}
+
+	@keyframes circular-carousel-reveal {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
 }
 
 @utility type-display {
@@ -119,9 +152,6 @@ main {
 
 .retro-epoch .text-cyan-400 {
 	color: #d1d5db;
-}
-
-@media (prefers-reduced-motion: reduce) {
 }
 
 @theme inline {

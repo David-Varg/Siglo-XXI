@@ -23,7 +23,7 @@ export const VoyagerInfo = () => {
 	}, [])
 
 	return (
-		<div id="voyager-telemetry" className="absolute bottom-28 left-8 z-20 flex flex-col gap-2 rounded-xl border border-cyan-500/30 bg-zinc-950/60 p-4 backdrop-blur-md font-mono text-xs text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+		<div id="voyager-telemetry" className="type-label absolute bottom-28 left-8 z-20 flex flex-col gap-2 rounded-xl border border-cyan-500/30 bg-zinc-950/60 p-4 text-xs text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)] backdrop-blur-md">
 			<div className="flex items-center gap-2 border-b border-cyan-500/20 pb-2">
 				<span className="relative flex h-2 w-2">
 					<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75"></span>

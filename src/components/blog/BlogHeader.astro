@@ -20,7 +20,7 @@ const {
 
 	<div class="flex max-sm:flex-col justify-between items-start gap-6">
 		<div>
-			<div class="font-mono text-cyan-400 text-xs tracking-widest mb-2 flex flex-wrap items-center gap-2">
+			<div class="type-label mb-2 flex flex-wrap items-center gap-2 text-xs tracking-widest text-cyan-400">
 				<span class="inline-block w-2 h-2 bg-emerald-400 rounded-full animate-ping"></span>
 				REGISTRO_HISTÓRICO_DESTINO // SIGLO {century}
 				<span
@@ -30,11 +30,11 @@ const {
 				</span>
 			</div>
 
-			<h1 class="font-title text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-linear-to-r from-white via-slate-200 to-cyan-300">
+			<h1 class="type-display mb-4 bg-linear-to-r from-white via-slate-200 to-cyan-300 bg-clip-text text-4xl text-transparent sm:text-5xl">
 				<slot />
 			</h1>
 
-			<div class="font-mono text-xs flex flex-wrap gap-3 text-gray-300">
+			<div class="type-label flex flex-wrap gap-3 text-xs text-gray-300">
 				<span class="px-2.5 py-1 rounded-md bg-slate-800/80 border border-white/10">
 					AÑO: <strong class="text-white">{year}</strong>
 				</span>
@@ -53,7 +53,7 @@ const {
 		<div class="flex flex-col items-end max-sm:items-start gap-4 shrink-0">
 			<a
 				href="/"
-				class="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-cyan-950/80 text-cyan-400 font-mono text-xs border border-cyan-500/40 transition-all duration-300 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] active:scale-95"
+				class="type-label group relative inline-flex items-center gap-2 rounded-xl border border-cyan-500/40 bg-slate-800 px-5 py-2.5 text-xs text-cyan-400 transition-all duration-300 hover:border-cyan-400 hover:bg-cyan-950/80 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] active:scale-95"
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

@@ -113,12 +113,6 @@ interface Leaving {
 	delays: number[]
 }
 
-const STYLE = `
-@keyframes circular-carousel-title { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes circular-carousel-leave { from { opacity: 1; } to { opacity: 0; } }
-@keyframes circular-carousel-reveal { from { opacity: 0; } to { opacity: 1; } }
-`
-
 const MASKS: Partial<Record<CircularCarouselPreset, string>> = {
 	wheel: "linear-gradient(to bottom, transparent, #000000 18%, #000000 82%, transparent)",
 	panorama:
@@ -1248,23 +1242,22 @@ export const CircularCarousel = ({
 				>
 					<span
 						key={active}
-						className="flex max-w-full flex-col items-center text-[20px] font-title leading-[1.35] animate-[circular-carousel-title_520ms_cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none"
+						className="type-heading flex max-w-full flex-col items-center text-[20px] leading-[1.35] animate-[circular-carousel-title_520ms_cubic-bezier(0.22,1,0.36,1)] motion-reduce:animate-none"
 					>
 						{current.title || current.alt}
 						{current.subtitle && (
-							<span className="font-body text-[15px] opacity-60">
+							<span className="type-body text-[15px] opacity-60">
 								{current.subtitle}
 							</span>
 						)}
 					</span>
-					<span className="font-mono inline-flex items-center gap-2 text-[18px] leading-none tabular-nums opacity-50">
+					<span className="type-label inline-flex items-center gap-2 text-[18px] leading-none tabular-nums opacity-50">
 						<Digits value={active + 1} />
 						<span className="opacity-60">/</span>
 						<span>{String(count).padStart(2, "0")}</span>
 					</span>
 				</div>
 			)}
-			<style>{STYLE}</style>
 			<div className="sr-only" aria-live="polite" aria-atomic="true">
 				{`${label}, ${active + 1} of ${count}`}
 			</div>
