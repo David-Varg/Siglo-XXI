@@ -62,8 +62,12 @@ import Layout from "@layouts/Layout.astro"
 
 		<section
 			id="section-team"
-			class="bg-zinc-950/90 backdrop-blur-lg px-4 py-10"
+			class="relative bg-zinc-950/90 backdrop-blur-lg px-4 py-10"
 		>
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute inset-x-4 top-0 z-20 h-px bg-linear-to-r from-transparent via-indigo-200/45 to-transparent shadow-[0_0_14px_rgba(129,140,248,0.2)]"
+			></div>
 			<TeamParticles />
 			<TeamCards />
 			<Footer />
