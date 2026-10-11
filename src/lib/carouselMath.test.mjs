@@ -6,19 +6,19 @@ import {
 	wrapCarouselAngle,
 } from "./carouselMath.ts"
 
-test("clamps a carousel value to its bounds", () => {
+test("Ajusta un valor del carrusel en sus límites", () => {
 	assert.equal(clampCarouselValue(-2, 0, 1), 0)
 	assert.equal(clampCarouselValue(0.4, 0, 1), 0.4)
 	assert.equal(clampCarouselValue(8, 0, 1), 1)
 })
 
-test("wraps carousel angles into the range from -180 to 180", () => {
+test("Ajusta los ángulos del carrusel al rango de -180 a 180", () => {
 	assert.equal(wrapCarouselAngle(190), -170)
 	assert.equal(wrapCarouselAngle(-190), 170)
 	assert.equal(wrapCarouselAngle(720), 0)
 })
 
-test("maps carousel rotation to a valid active item", () => {
+test("Asocia la rotación del carrusel a un elemento activo válido", () => {
 	assert.equal(getActiveCarouselIndex(0, 36, 10), 0)
 	assert.equal(getActiveCarouselIndex(-72, 36, 10), 2)
 	assert.equal(getActiveCarouselIndex(36, 36, 10), 9)
