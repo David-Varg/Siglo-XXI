@@ -1,35 +1,39 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
 
+const omittedSearchFields = new Set([
+	"year",
+	"century",
+	"inventor",
+	"precededBy",
+	"impactScore",
+])
+
 export const GET: APIRoute = async () => {
 	try {
-		const posts = await getCollection("hitos")
+		const hitosCollection = await getCollection("hitos")
 
-		const postsOrdenados = [...posts].sort(
+		const hitosOrdenados = [...hitosCollection].sort(
 			(a, b) => a.data.year - b.data.year,
 		)
 
-		const hitos = postsOrdenados.map((post) => {
-			const {
-				year,
-				century,
-				inventor,
-				precededBy,
-				impactScore,
-				heroImage,
-				...restoDeCampos
-			} = post.data
+		const cachedHitos = hitosOrdenados.map((hito) => {
+			const restoDeCampos = Object.fromEntries(
+				Object.entries(hito.data).filter(
+					([field]) => !omittedSearchFields.has(field),
+				),
+			)
 
 			return {
-				id: post.id,
-				title: post.data.title,
-				category: post.data.category,
-				description: post.data.description,
+				id: hito.id,
+				title: hito.data.title,
+				category: hito.data.category,
+				description: hito.data.description,
 				...restoDeCampos,
 			}
 		})
 
-		return new Response(JSON.stringify(hitos), {
+		return new Response(JSON.stringify(cachedHitos), {
 			status: 200,
 			headers: {
 				"Content-Type": "application/json",

@@ -2,7 +2,10 @@ export interface SearchItem {
 	id: string
 	title: string
 	description: string
-	category: string
+  category: string
+  heroImage?: string
+	year?: number
+	[key: string]: unknown
 }
 
 export interface SearchSuggestion {

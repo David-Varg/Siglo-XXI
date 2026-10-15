@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react"
 import { useStore } from "@nanostores/react"
-import { $hitosCache } from "@store/searchStore"
+import { $hitosCache, getHitos } from "@store/searchStore"
 
-import type { SearchItem, SearchSuggestion } from "@/types/search"
+import type { SearchSuggestion } from "@/types/search"
 import { Search } from "@hooks/SearchResult"
 
 export const SearchBar = () => {
@@ -18,19 +18,11 @@ export const SearchBar = () => {
 
 	// Cargar los datos de la api xd
 	useEffect(() => {
-		if ($hitosCache.get() !== null) return
+		setCargando(true)
 
 		const cargarHitos = async () => {
-			setCargando(true)
 			try {
-				const response = await fetch("/api/getHitos.json")
-				if (!response.ok) throw new Error("Error al obtener datos")
-
-				const datosLimpios: SearchItem[] = await response.json()
-
-				$hitosCache.set(datosLimpios)
-			} catch (error) {
-				console.error("Error cargando el índice de búsqueda:", error)
+				await getHitos()
 			} finally {
 				setCargando(false)
 			}
@@ -38,6 +30,18 @@ export const SearchBar = () => {
 
 		cargarHitos()
 	}, [])
+
+	// Evitar Race Conditions, por si aún no se han cargado los datos pero el usuario escribe,
+	// que se actualice cuando lleguen los datos sin necesidad de que el usuario vuelva a
+	// escribir
+	useEffect(() => {
+		if (hitos && query.trim() !== "") {
+			const resultados = Search.autocompletado(query, hitos)
+			setResults(resultados)
+			setIsOpen(resultados.length > 0)
+			if (resultados.length > 0) setHasNoResults(false)
+		}
+	}, [hitos])
 
 	// Ponerse a escuchar hasta que el usuario clickee por fuera del buscador
 	useEffect(() => {
@@ -57,8 +61,8 @@ export const SearchBar = () => {
 
 	// Busca el elemento dentro de la referencia que contenga el "data-active='true'"
 	// y si existe, hace scroll hacia él.
-	// Esta función se activa cada vez que el "selectedIndex" cambia, y la única forma de que cambie 
-	// es por el handleKeyDown 
+	// Esta función se activa cada vez que el "selectedIndex" cambia, y la única forma de que cambie
+	// es por el handleKeyDown
 	useEffect(() => {
 		if (!searchRef.current) return
 
@@ -92,7 +96,7 @@ export const SearchBar = () => {
 	// de ese resultado seleccionado y redirija hacia esa página
 	// 2. En caso de que no haya seleccionado nada y le haya dado "enter" lo redirije al primer resultado
 	// 3. En caso que haya escrito algo y no hayan resultados, se marca en "rojo", solo funciona en
-	// caso de usar el botón, ya que para que funcione con "Enter" debe estar dentro de un <form></form> 
+	// caso de usar el botón, ya que para que funcione con "Enter" debe estar dentro de un <form></form>
 	const handleSearch = () => {
 		if (selectedIndex >= 0 && results[selectedIndex])
 			window.location.href = results[selectedIndex].url

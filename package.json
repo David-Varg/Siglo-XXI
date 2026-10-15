@@ -8,7 +8,7 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build",
-		"test:unit": "node --experimental-strip-types --test src/lib/carouselMath.test.mjs",
+		"test:unit": "node --experimental-strip-types --test src/lib/carouselMath.test.mjs src/hooks/SearchResult.test.mjs",
 		"preview": "astro preview",
 		"astro": "astro",
 		"devtoolbar:disable": "astro preferences disable devToolbar",
