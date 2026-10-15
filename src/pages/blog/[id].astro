@@ -14,6 +14,10 @@ import { getCollection, render } from "astro:content"
 export const getStaticPaths = (async () => {
 	const content = await getCollection("hitos")
 
+	content.sort(
+		(a, b) => a.data.year - b.data.year,
+	)
+
 	return content.map((blog, index) => {
 		const nextBlog = content[(index + 1) % content.length]
 		return {
@@ -66,8 +70,6 @@ const epochConfig = isRetroEpoch
 
 <LayoutOfPages title={title}>
 	<div class={`${epochTheme} min-h-screen relative`}>
-		<!-- Tu código del Grid de Fondo con Parallax de Orbes... -->
-
 		<article
 			class="relative z-10 min-h-screen max-w-7xl mx-auto px-4 py-12"
 			id="blog-article"
@@ -107,7 +109,7 @@ const epochConfig = isRetroEpoch
 		<section
 			id="next-post-trigger"
 			class="max-w-4xl mx-auto px-4 py-16 text-center border-t border-white/10 my-12"
-			data-next-url={`/hitos/${nextBlogId}`}
+			data-next-url={`/blog/${nextBlogId}`}
 		>
 			<span class="text-xs uppercase tracking-widest text-emerald-400 font-semibold">
 				Siguiente Hito Histórico
@@ -141,5 +143,5 @@ const epochConfig = isRetroEpoch
 </LayoutOfPages>
 
 <script>
-	import "@/scripts/blogPage"
+	import "@hooks/blogPage"
 </script>

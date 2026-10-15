@@ -13,10 +13,12 @@ const initScene = async () => {
 		return
 	container.dataset.sceneInitialized = "true"
 
+	// Lazy loader
 	let THREE: typeof import("three")
 	let GLTFLoader: typeof import("three/examples/jsm/loaders/GLTFLoader.js").GLTFLoader
 	let DRACOLoader: typeof import("three/examples/jsm/loaders/DRACOLoader.js").DRACOLoader
 	let OBJLoader: typeof import("three/examples/jsm/loaders/OBJLoader.js").OBJLoader
+
 	try {
 		;[THREE, { GLTFLoader }, { DRACOLoader }, { OBJLoader }] =
 			await Promise.all([
@@ -27,10 +29,12 @@ const initScene = async () => {
 			])
 	} catch (error) {
 		console.error("No se pudo inicializar la escena 3D:", error)
+
 		window.dispatchEvent(new CustomEvent("hero:3d-ready"))
 		return
 	}
 
+	// ----------> Limpieza de la ejecución anterior
 	if (animationFrameId) cancelAnimationFrame(animationFrameId)
 	if (onMouseMove) window.removeEventListener("mousemove", onMouseMove)
 	if (onResize) window.removeEventListener("resize", onResize)
@@ -41,6 +45,7 @@ const initScene = async () => {
 		)
 	sceneObserver?.disconnect()
 
+	// ----------> Creación de la escena + configuración
 	const scene = new THREE.Scene()
 	const compactDevice =
 		window.matchMedia("(max-width: 767px)").matches ||
@@ -64,15 +69,18 @@ const initScene = async () => {
 
 	renderer.setSize(window.innerWidth, window.innerHeight)
 	renderer.setPixelRatio(
-		Math.min(window.devicePixelRatio, compactDevice ? 1 : 1.5),
+		Math.min(window.devicePixelRatio, compactDevice ? 1 : 2),
 	)
 
 	renderer.shadowMap.enabled = !compactDevice
 	renderer.shadowMap.type = THREE.PCFShadowMap
 
+	// ----------> Luces
+	// <-- Ambiental -->
 	const ambientLight = new THREE.AmbientLight(0x07101e, 0.78)
 	scene.add(ambientLight)
 
+	// <-- Luz Principal -->
 	const sunLight = new THREE.DirectionalLight(0xffd08a, 6.5)
 	sunLight.position.set(-54, 18, -408)
 	sunLight.target.position.set(0, 0, -130)
@@ -80,15 +88,18 @@ const initScene = async () => {
 	scene.add(sunLight)
 	scene.add(sunLight.target)
 
+	// <-- Luz para realismo -->
 	const pointSunLight = new THREE.PointLight(0xffad42, 850, 360, 1.7)
 	pointSunLight.position.copy(sunLight.position)
 	scene.add(pointSunLight)
 
+	// <-- Luz de relleno para evitar negros absolutos -->
 	const fillLight = new THREE.DirectionalLight(0x38bdf8, 2.0)
 	fillLight.position.set(-5, -3, 3)
 	fillLight.castShadow = !compactDevice
 	scene.add(fillLight)
 
+	// <-- Luz de contorno para embellecer los bordes -->
 	const rimLight = new THREE.DirectionalLight(0xa855f7, 3.5)
 	rimLight.position.set(0, -6, -4)
 	rimLight.castShadow = !compactDevice
@@ -101,6 +112,7 @@ const initScene = async () => {
 	let starStreaks: THREE_NS.LineSegments | null = null
 	const streakCenters: [number, number, number][] = []
 
+	// ----------> Movimiento de la cámara respecto a la Voyager
 	let flightProgress = 0
 
 	const cameraPivot = new THREE.Vector3()
@@ -112,6 +124,9 @@ const initScene = async () => {
 		const pivot = voyager?.position ?? cameraPivot.set(0, 0, 0)
 
 		if (flightProgress < 0.42) {
+		  // Fase 1: Orbita alrededor de la Voyager la cámara
+			//         pasando de estar atrás hacia adelante.
+			//         0% - 42%
 			if (voyager) voyager.position.z = 0
 
 			const turn = THREE.MathUtils.clamp(flightProgress / 0.34, 0, 1)
@@ -121,7 +136,9 @@ const initScene = async () => {
 
 			camera.position.copy(pivot).add(cameraOffset)
 			camera.lookAt(pivot)
-		} else {
+    } else {
+      // Fase 2: Sigue a la Voyager en el recorrido hacia la Tierra.
+      //         42% - 92%
 			const travel = THREE.MathUtils.clamp(
 				(flightProgress - 0.42) / 0.5,
 				0,
@@ -141,22 +158,23 @@ const initScene = async () => {
 			camera.lookAt(cameraTarget)
 		}
 
-		if (flightProgress >= 0.92 && voyager) {
-			camera.position.set(
-				voyager.position.x,
-				voyager.position.y + 1.5,
-				voyager.position.z + 11,
-			)
-			cameraTarget.set(0, 0, -148)
-			camera.lookAt(cameraTarget)
-		}
+		// Fase 3: Finaliza el recorrido y la cámara se queda apuntando específicamente
+		//         a la Voyager. Puede parecer redundante respecto al código anterior pero
+		//         un "por si acaso" para evitar que algún decimal la cague.
+		//         92% - 100%
+    if (flightProgress >= 0.92 && voyager) cameraTarget.set(0, 0, -148)
 
+
+    // ----------> Sección adicional para el efecto "Warp" xd
+    //             42% - 64%
 		const streakProgress = THREE.MathUtils.clamp(
 			(flightProgress - 0.42) / 0.22,
 			0,
 			1,
 		)
 
+		// Cuando streakProgress sea mayor a 0.02 starsStreaks se volverá visible
+		// lo que activará este "if"
 		if (starStreaks) {
 			const positions = starStreaks.geometry.getAttribute(
 				"position",
@@ -195,10 +213,10 @@ const initScene = async () => {
 		}
 	).__setHeroFlightProgress = setFlightProgress
 
+	// ----------> Renders 3D
 	const loader = new GLTFLoader()
 	const dracoLoader = new DRACOLoader()
 
-	// --------- Renders 3D -----------
 	const sunTextureCanvas = document.createElement("canvas")
 
 	sunTextureCanvas.width = 512

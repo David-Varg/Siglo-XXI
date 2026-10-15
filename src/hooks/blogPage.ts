@@ -67,9 +67,7 @@ document.addEventListener("astro:page-load", () => {
 		})
 
 		const nextTrigger = document.getElementById("next-post-trigger")
-		if (nextTrigger) {
-			const nextUrl = nextTrigger.dataset.nextUrl
-
+		if (nextTrigger)
 			ScrollTrigger.create({
 				trigger: nextTrigger,
 				start: "top 80%",
@@ -86,7 +84,6 @@ document.addEventListener("astro:page-load", () => {
 					)
 				},
 			})
-		}
 	})
 })
 
