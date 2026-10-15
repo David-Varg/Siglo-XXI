@@ -37,7 +37,6 @@ export const AudioPlayer = () => {
 
 	return (
 		<div
-			id="audio-player"
 			className="fixed bottom-10 right-10 z-40 select-none"
 		>
 			<audio ref={audioRef} loop src="/sounds/Utrymme.mp3" />

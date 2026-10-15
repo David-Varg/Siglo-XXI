@@ -24,7 +24,6 @@ export const VoyagerInfo = () => {
 
 	return (
 		<div
-			id="voyager-telemetry"
 			className="type-label absolute bottom-20 left-4 right-4 z-20 flex flex-col gap-2 rounded-xl border border-cyan-500/30 bg-zinc-950/60 p-3 text-[10px] text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)] backdrop-blur-md sm:bottom-28 sm:left-8 sm:right-auto sm:p-4 sm:text-xs"
 		>
 			<div className="flex items-center gap-2 border-b border-cyan-500/20 pb-2">
