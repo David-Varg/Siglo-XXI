@@ -12,7 +12,7 @@ const entries = (await getCollection("hitos")).sort(
 
 const items = entries.map((e) => {
 	return {
-		src: e.data.heroImage,
+	src: e.data.heroImage,
 		alt: e.data.title,
 		title: e.data.title,
 		subtitle: e.data.description,
@@ -44,7 +44,9 @@ const items = entries.map((e) => {
 
 	<article class="relative z-0 flex flex-col gap-12 sm:flex-row sm:gap-40">
 		<TimeMachine />
-		<!--<section>
+
+		<div data-carousel-stage class="relative h-108 w-full sm:h-140">
+			<section>
 				<div class="mb-5 flex items-end justify-between gap-4">
 					<div>
 						<p class="type-label text-[10px] tracking-[0.25em] text-cyan-200/60">
@@ -55,13 +57,11 @@ const items = entries.map((e) => {
 						</h3>
 					</div>
 					<span class="shrink-0 type-label text-xs text-zinc-500 select-none">
-						{String(entries.length).padStart(3, "0")} registros
+						{String(entries.length).padStart(2, "0")} registros
 					</span>
 				</div>
-				
-			</section> -->
+			</section>
 
-		<div data-carousel-stage class="relative h-108 w-full sm:h-140">
 			<CircularCarousel
 				client:visible
 				items={items}
@@ -70,7 +70,7 @@ const items = entries.map((e) => {
 				intro="rise"
 				cardWidth={220}
 				aspectRatio={0.75}
-				speed={14}
+				speed={8}
 				captions={true}
 				gap={25}
 				tilt={-3}

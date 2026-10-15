@@ -1375,7 +1375,7 @@ export const CircularCarousel = ({
 									selectedImageFailed ||
 									unavailableImages.has(selectedItem.src)
 										? "hidden"
-										: "max-h-[55dvh] w-full object-contain"
+										: "max-h-[55dvh] h-[50vh] w-full object-contain"
 								}
 								decoding="async"
 								onError={() => setSelectedImageFailed(true)}
@@ -1385,7 +1385,7 @@ export const CircularCarousel = ({
 								<div
 									role="img"
 									aria-label={`Imagen no disponible: ${selectedItem.alt || selectedItem.title || "noticia"}`}
-									className="grid min-h-48 place-items-center p-8 text-center sm:min-h-64"
+									className="grid min-h-48 place-items-center p-8 text-center sm:min-h-64 h-[50vh]"
 								>
 									<span className="type-label text-xs tracking-[0.24em] text-cyan-100/65">
 										ARCHIVO HISTÓRICO
@@ -1413,14 +1413,15 @@ export const CircularCarousel = ({
 								{selectedItem.title || selectedItem.alt}
 							</h2>
 							{selectedItem.category && (
-								<p className="type-label mt-4 inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[10px] text-cyan-100 sm:text-xs">
+								<p className="max-w-max type-label mt-4 inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[10px] text-cyan-100 sm:text-xs">
 									{selectedItem.category}
 								</p>
 							)}
 							{selectedItem.url && (
 								<a
 									href={selectedItem.url}
-									className="type-label mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-cyan-300/30 bg-cyan-300/10 px-5 py-3 text-xs text-cyan-100 transition-colors hover:border-cyan-200/60 hover:bg-cyan-300/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
+									target="_blank"
+									className="type-label mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-cyan-300/30 bg-cyan-300/10 px-5 py-3 text-xs text-cyan-100 transition-colors hover:border-cyan-200/60 hover:bg-cyan-300/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
 								>
 									Leer artículo
 									<span aria-hidden="true">↗</span>

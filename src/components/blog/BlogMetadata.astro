@@ -25,11 +25,11 @@ const {
 			</h3>
 			{inventor.map((inv) => (
 				<div class="flex items-center gap-4 mb-3 p-2 rounded-lg bg-slate-800/40 border border-white/5">
-					<div class="w-14 h-14 rounded-xl bg-slate-800 border border-cyan-400/40 overflow-hidden shrink-0">
+					<div class="size-14 max-sm:size-20 rounded-xl bg-slate-800 border border-cyan-400/40 overflow-hidden shrink-0">
 						<img
 							src={
 								inv.avatar
-									? `/inventors/${inv.avatar}`
+									? inv.avatar
 									: "/inventors/default.png"
 							}
 							alt={inv.name}

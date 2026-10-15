@@ -24,7 +24,11 @@ const hitosSigloXXI = defineCollection({
 			"tecnologia",
 			"salud",
 			"ciencia",
-			"sociedad",
+      "sociedad",
+      "politica",
+      "economia",
+      "medicina",
+      "medio-ambiente"
 		]),
 		description: z.string(),
 		impactScore: z.number().min(1).max(10),

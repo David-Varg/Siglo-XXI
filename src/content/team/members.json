@@ -11,7 +11,7 @@
 	{
 		"id": 2,
 		"name": "Helmuth Ramirez",
-		"role": "Búsqueda de Referencias y Assets",
+		"role": "Asset & Technical Research",
 		"badge": "Assets",
 		"avatar": "/Helmuth.webp",
 		"github": "https://github.com/HelmuthRamirez"
@@ -19,7 +19,7 @@
 	{
 		"id": 3,
 		"name": "Tomas Bautista",
-		"role": "Redacción de contenido",
+		"role": "Content Strategist & Technical Writer",
 		"badge": "Contenido",
 		"avatar": "/Tomas.webp",
 		"github": "https://github.com/tomiu8",
@@ -28,7 +28,7 @@
 	{
 		"id": 4,
 		"name": "Anderson Medina",
-		"role": "Diseño UI",
+		"role": "UI/UX Designer",
 		"badge": "Diseño",
 		"avatar": "/Anderson.webp",
 		"github": "https://github.com/Anderson-2205"
