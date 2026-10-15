@@ -2,7 +2,7 @@
 
 Proyecto académico desarrollado para la asignatura **Introducción a la Ingeniería de Software** de la **Universidad Surcolombiana**, con la tutoría del docente **Juan Manuel González**.
 
-La aplicación presenta hitos históricos, sus inventores y el impacto que han tenido en la sociedad. La propuesta combina contenido editorial con una experiencia visual interactiva: un recorrido espacial en 3D, una línea de tiempo, búsqueda de artículos y una sección dedicada al equipo.
+La aplicación presenta hitos históricos, sus inventores y el impacto que han tenido en la sociedad. La propuesta combina una Arquitectura de tipo MPA buscando una experiencia de usuario estilo SPA gracias a las View Transitions de Astro; contenido editorial con una experiencia visual interactiva: un recorrido espacial en 3D, una línea de tiempo, búsqueda de artículos y una sección dedicada al equipo.
 
 > Nota: El sitio y su estructura están desarrollados. La selección y redacción de los artículos, junto con varias imágenes y modelos asociados a los inventos, se incorporarán cuando el equipo de investigación y contenido los entregue.
 
@@ -17,7 +17,7 @@ La aplicación presenta hitos históricos, sus inventores y el impacto que han t
 
 La interfaz contempla tamaños de pantalla pequeños, movimiento reducido y pausas de animación cuando algunas escenas dejan de estar visibles.
 
-## Tecnologías
+## Tech Stack
 
 - [Astro](https://astro.build/) para páginas, layouts, rutas y colecciones de contenido.
 - [React](https://react.dev/) y [TypeScript](https://www.typescriptlang.org/es/) para componentes interactivos.
@@ -28,7 +28,7 @@ La interfaz contempla tamaños de pantalla pequeños, movimiento reducido y paus
 - Zod, mediante Astro Content Collections, para validar la información editorial.
 - pnpm, ESLint y Prettier para dependencias, análisis estático y formato.
 
-## Requisitos
+## Prerequisitos
 
 - Node.js `>=22.12.0`
 - pnpm
@@ -61,14 +61,14 @@ También puedes iniciar Astro en primer plano con `pnpm dev`.
 
 ## Comandos disponibles
 
-| Comando | Acción |
-| --- | --- |
-| `pnpm dev` | Inicia el servidor de desarrollo de Astro. |
-| `pnpm build` | Genera la versión de producción en `dist/`. |
-| `pnpm preview` | Sirve localmente la compilación de producción. |
-| `pnpm lint` | Ejecuta ESLint sobre el código de `src/`. |
-| `pnpm lint:fix` | Aplica las correcciones automáticas de ESLint. |
-| `pnpm format` | Formatea los archivos compatibles con Prettier. |
+| Comando          | Acción                                                   |
+| ---------------- | -------------------------------------------------------- |
+| `pnpm dev`       | Inicia el servidor de desarrollo de Astro.               |
+| `pnpm build`     | Genera la versión de producción en `dist/`.              |
+| `pnpm preview`   | Sirve localmente la compilación de producción.           |
+| `pnpm lint`      | Ejecuta ESLint sobre el código de `src/`.                |
+| `pnpm lint:fix`  | Aplica las correcciones automáticas de ESLint.           |
+| `pnpm format`    | Formatea los archivos compatibles con Prettier.          |
 | `pnpm test:unit` | Ejecuta las pruebas unitarias de la lógica del carrusel. |
 
 ## Organización del proyecto
@@ -77,11 +77,10 @@ También puedes iniciar Astro en primer plano con `pnpm dev`.
 src/
 ├── components/     Componentes de layout, navegación, artículos y secciones
 ├── content/        Datos de hitos y miembros del equipo
-├── hooks/          Lógica reutilizable de búsqueda
+├── hooks/          Lógica reutilizable
 ├── layouts/        Estructura compartida entre páginas
 ├── lib/            Funciones independientes y pruebas unitarias
 ├── pages/          Inicio, artículos y endpoint de búsqueda
-├── scripts/        Animaciones y comportamiento del cliente
 ├── store/          Estado compartido
 ├── styles/         Tema y estilos globales de Tailwind
 └── types/          Tipos de TypeScript agrupados por dominio
@@ -93,7 +92,7 @@ public/
 
 Astro genera páginas estáticas para los artículos a partir de la colección `hitos`. React se hidrata en los componentes que necesitan interacción, mientras que los scripts del cliente controlan la escena 3D y las animaciones de scroll.
 
-## Cómo añadir un hito
+## ¿Cómo añadir contenido?
 
 Cada archivo Markdown de `src/content/blog/` representa un hito. Su frontmatter debe cumplir el esquema definido en `src/content.config.ts`:
 
@@ -103,9 +102,18 @@ title: "Nombre del hito"
 year: 2026
 century: "XXI"
 inventor:
-    name: "Nombre de la persona"
-    role: "Rol relacionado con el hito"
-    avatar: "/images/inventors/nombre.webp"
+    [
+        {
+            name: "Nombre de la persona",
+            role: "Rol relacionado con el hito",
+            avatar: "/images/inventors/nombre.webp",
+        },
+        {
+            name: "Nombre de otra persona (opcional más de 1 inventor)",
+            role: "Rol relacionado con el hito",
+            avatar: "/images/inventors/nombreOtro.webp",
+        },
+    ]
 category: "tecnologia"
 place: "Lugar"
 precededBy: []
@@ -118,22 +126,22 @@ heroImage: "/images/inventions/nombre-del-hito.webp"
 Contenido del artículo en Markdown.
 ```
 
-Las categorías válidas son `astronomia`, `tecnologia`, `salud`, `ciencia` y `sociedad`. `model3d` es opcional. Los valores de las rutas de imágenes y modelos deben corresponder a archivos disponibles en `public/`.
+Las categorías válidas son `astronomia`, `tecnologia`, `salud`, `ciencia`, `sociedad`, `politica`, `economia`, `medicina` y `medio-ambiente`. `model3d` es opcional. Los valores de las rutas de imágenes y modelos deben corresponder a archivos disponibles en `public/`.
 
 Los datos del equipo están en `src/content/team/members.json`; los avatares y enlaces se definen ahí.
 
-## Pruebas y estado
+## Testing & Status
 
 La suite unitaria actual cubre funciones matemáticas del carrusel y se ejecuta con `pnpm test:unit`. Aún no hay una suite E2E que recorra la experiencia completa; se agregará en futuras versiones.
 
 ## Equipo del proyecto
 
-| Integrante | Rol | GitHub / redes |
-| --- | --- | --- |
-| **David Vargas** | Lead Developer & Software Architect | [@David-Varg](https://github.com/David-Varg) |
-| **Helmuth Ramirez** | Búsqueda de Referencias y Assets | [@Helmuth-Ramirez](https://github.com/HelmuthRamirez) |
-| **Tomas Bautista** | Redacción de contenido | [@Tomas-Bautista](https://github.com/tomiu8) |
-| **Anderson Medina** | Diseño UI | [@Anderson-2205](https://github.com/Anderson-2205) |
+| Integrante          | Rol                                   | GitHub / redes                                        |
+| ------------------- | ------------------------------------- | ----------------------------------------------------- |
+| **David Vargas**    | Lead Developer & Software Architect   | [@David-Varg](https://github.com/David-Varg)          |
+| **Helmuth Ramirez** | Asset & Technical Research            | [@Helmuth-Ramirez](https://github.com/HelmuthRamirez) |
+| **Tomas Bautista**  | Content Strategist & Technical Writer | [@Tomas-Bautista](https://github.com/tomiu8)          |
+| **Anderson Medina** | UI/UX Designer                        | [@Anderson-2205](https://github.com/Anderson-2205)    |
 
 ## Contexto académico
 

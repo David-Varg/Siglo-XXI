@@ -1,22 +1,23 @@
-## Development
+# Agent guidelines
 
-When starting the dev server, use background mode:
+## Project overview
 
-```
-astro dev --background
-```
+- This is an Astro static site with React components for interactive UI.
+- Astro pages and layouts live in `src/pages/` and `src/layouts/`.
+- Content collections are configured in `src/content.config.ts`.
+- Browser-side behavior is implemented in `src/hooks/` and imported by Astro components.
+- Shared React state is managed with Nano Stores in `src/store/`.
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+## Working in this repository
 
-## Documentation
+- Preserve the existing Spanish UI copy and TypeScript types.
+- Use Astro content collections for article and team data.
+- Keep client-side code compatible with Astro View Transitions and reduced-motion preferences.
+- Do not commit generated output in `dist/` or `.astro/`.
+- Avoid modifying article Markdown or image assets unless the task explicitly includes them.
 
-Full documentation: https://docs.astro.build
+## Validation
 
-Consult these guides before working on related tasks:
-
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+- Run `pnpm lint` for ESLint.
+- Run `pnpm test:unit` for unit tests.
+- Run `pnpm build` to validate content collections and static routes.
