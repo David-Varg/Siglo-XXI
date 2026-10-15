@@ -1,0 +1,36 @@
+[
+	{
+		"id": 1,
+		"name": "David Vargas",
+		"role": "Lead Developer & Software Architect",
+		"badge": "Lead Team",
+		"avatar": "/David.webp",
+		"github": "https://github.com/David-Varg",
+		"x": "https://x.com/hi_alucin"
+	},
+	{
+		"id": 2,
+		"name": "Helmuth Ramirez",
+		"role": "Asset & Technical Research",
+		"badge": "Assets",
+		"avatar": "/Helmuth.webp",
+		"github": "https://github.com/HelmuthRamirez"
+	},
+	{
+		"id": 3,
+		"name": "Tomas Bautista",
+		"role": "Content Strategist & Technical Writer",
+		"badge": "Contenido",
+		"avatar": "/Tomas.webp",
+		"github": "https://github.com/tomiu8",
+		"threads": "https://www.threads.com/@_tomif8"
+	},
+	{
+		"id": 4,
+		"name": "Anderson Medina",
+		"role": "UI/UX Designer",
+		"badge": "Diseño",
+		"avatar": "/Anderson.webp",
+		"github": "https://github.com/Anderson-2205"
+	}
+]

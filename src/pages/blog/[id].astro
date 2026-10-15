@@ -1,0 +1,147 @@
+---
+// Layouts
+import LayoutOfPages from "@layouts/Layout.astro"
+
+// Static components
+import Header from "@components/blog/BlogHeader.astro"
+import Aside from "@components/blog/BlogMetadata.astro"
+import MainConcent from "@components/blog/BlogContent.astro"
+import Footer from "@components/layout/Footer.astro"
+
+import type { GetStaticPaths } from "astro"
+import { getCollection, render } from "astro:content"
+
+export const getStaticPaths = (async () => {
+	const content = await getCollection("hitos")
+
+	content.sort(
+		(a, b) => a.data.year - b.data.year,
+	)
+
+	return content.map((blog, index) => {
+		const nextBlog = content[(index + 1) % content.length]
+		return {
+			params: { id: blog.id },
+			props: {
+				blog,
+				nextBlogId: nextBlog.id,
+				nextBlogTitle: nextBlog.data.title,
+			},
+		}
+	})
+}) satisfies GetStaticPaths
+
+const { blog, nextBlogId, nextBlogTitle } = Astro.props
+const { Content } = await render(blog)
+
+const {
+	title,
+	year,
+	century,
+	inventor,
+	precededBy,
+	place,
+	category,
+	description,
+	impactScore,
+	heroImage,
+	model3d,
+} = blog.data
+
+const isRetroEpoch = year < 1950
+const epochTheme = isRetroEpoch
+	? "grayscale contrast-110 [&_.text-cyan-400]:text-gray-300"
+	: ""
+
+const epochConfig = isRetroEpoch
+	? {
+			glowColor: "cyan",
+			barColor: "emerald",
+			badgeConfig: { class: "bg-slate-800 border-white/10 text-white" },
+		}
+	: {
+			glowColor: "cyan",
+			barColor: "cyan",
+			badgeConfig: {
+				class: "bg-cyan-950/60 border-cyan-500/30 text-cyan-300",
+			},
+		}
+---
+
+<LayoutOfPages title={title}>
+	<div class={`${epochTheme} min-h-screen relative`}>
+		<article
+			class="relative z-10 min-h-screen max-w-7xl mx-auto px-4 py-12"
+			id="blog-article"
+		>
+			<Header
+				year={year}
+				century={century}
+				place={place}
+				impactScore={impactScore}
+				badgeConfig={epochConfig}
+			>
+				{title}
+			</Header>
+
+			<div
+				id="resto"
+				class="mt-8 grid grid-cols-1 items-start gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-12"
+			>
+				<Aside
+					inventor={inventor}
+					precededBy={precededBy}
+					impactScore={impactScore}
+					category={category}
+					barColor={epochConfig.barColor}
+				/>
+				<MainConcent
+					description={description}
+					heroImage={heroImage}
+					model3d={model3d}
+					isRetro={isRetroEpoch}
+				>
+					<Content />
+				</MainConcent>
+			</div>
+		</article>
+
+		<section
+			id="next-post-trigger"
+			class="max-w-4xl mx-auto px-4 py-16 text-center border-t border-white/10 my-12"
+			data-next-url={`/blog/${nextBlogId}`}
+		>
+			<span class="text-xs uppercase tracking-widest text-emerald-400 font-semibold">
+				Siguiente Hito Histórico
+			</span>
+			<h3 class="text-2xl md:text-4xl font-bold mt-2 mb-6 text-white">
+				{nextBlogTitle}
+			</h3>
+			<a
+				href={`/blog/${nextBlogId}`}
+				class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/20"
+			>
+				Cargar siguiente hito
+				<svg
+					class="w-4 h-4"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M14 5l7 7m0 0l-7 7m7-7H3"
+					></path>
+				</svg>
+			</a>
+		</section>
+
+		<Footer />
+	</div>
+</LayoutOfPages>
+
+<script>
+	import "@hooks/blogPage"
+</script>

@@ -1,0 +1,56 @@
+<div
+	class="screen-loader fixed inset-0 z-50 grid place-items-center bg-[radial-gradient(ellipse_at_center,#111827_0%,#05050a_72%)] transition-all duration-650 ease-in-out [&.screen-loader--hidden]:pointer-events-none [&.screen-loader--hidden]:invisible [&.screen-loader--hidden]:opacity-0"
+	data-screen-loader
+	role="status"
+	aria-label="Cargando El Siglo XXI"
+>
+	<div class="grid justify-items-center gap-4 drop-shadow-[0_0_22px_rgba(34,211,238,0.20)]">
+		<svg
+			class="w-[min(10rem,42vw)] animate-[pixel-art_850ms_steps(2,end)_infinite_alternate] motion-reduce:animate-none"
+			viewBox="0 0 160 112"
+			role="img"
+			aria-label="Pixel art"
+		>
+			<g shape-rendering="crispEdges">
+				<path
+					d="M24 16h56v8h16v8h16v8h24v32h-16v8h-8v16H96V80H80v16H48V80H32V64H16V40h8z"
+					fill="#111827"
+					stroke="#22d3ee"
+					stroke-width="3"
+				/>
+				<path d="M112 40h8v8h-8z" fill="#e879f9" />
+				<path
+					d="M40 64h8v8h-8zM56 64h8v8h-8zM72 64h8v8h-8zM88 64h8v8h-8z"
+					fill="#a5f3fc"
+				/>
+				<path
+					d="M32 96v8h8v-8m32 0v8h8v-8m40-24v8h8v-8"
+					fill="none"
+					stroke="#e879f9"
+					stroke-width="4"
+				/>
+			</g>
+			<path
+				d="M8 108h144"
+				stroke="#6366f1"
+				stroke-width="2"
+				stroke-dasharray="5 6"
+			/>
+		</svg>
+
+		<p class="type-label m-0 text-[0.7rem] leading-none font-semibold tracking-[0.24em] text-cyan-200 select-none">
+			INICIANDO SESIÓN...
+		</p>
+
+		<div
+			class="flex h-0.75 w-36 overflow-hidden bg-zinc-800"
+			aria-hidden="true"
+		>
+			<span class="h-full w-[45%] animate-[loader-scan_1.1s_ease-in-out_infinite_alternate] bg-linear-to-r from-indigo-500 via-cyan-400 to-fuchsia-400 motion-reduce:animate-none"></span>
+		</div>
+	</div>
+</div>
+
+<script>
+	import "@hooks/screenLoader"
+</script>

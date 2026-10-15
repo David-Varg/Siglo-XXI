@@ -1,0 +1,101 @@
+---
+import "@/styles/global.css"
+import { ClientRouter } from "astro:transitions"
+import type { LayoutProps } from "@/types/layout"
+
+const pageTransition = {
+	forwards: {
+		old: { name: "page-exit", duration: "180ms", easing: "ease-in" },
+		new: {
+			name: "page-enter",
+			duration: "320ms",
+			easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+		},
+	},
+	backwards: {
+		old: { name: "page-exit-back", duration: "180ms", easing: "ease-in" },
+		new: {
+			name: "page-enter-back",
+			duration: "320ms",
+			easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+		},
+	},
+}
+
+// Interactive Components
+import { AudioPlayer } from "@components/shared/AudioPlayer"
+
+// Typo para Tailwind
+const { title }: LayoutProps = Astro.props
+---
+
+<html lang="es" transition:animate="none">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/icon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<ClientRouter />
+		<title>{ title }</title>
+	</head>
+	<body
+		class="bg-zinc-950 text-white w-screen min-h-screen overflow-x-hidden"
+		transition:animate={pageTransition}
+	>
+		<slot />
+		<div id="audio-player" transition:persist>
+			<AudioPlayer client:idle />
+		</div>
+	</body>
+</html>
+
+<style is:global>
+	@keyframes page-enter {
+		from {
+			opacity: 0;
+			filter: blur(3px);
+			transform: translateY(12px) scale(0.995);
+		}
+		to {
+			opacity: 1;
+			filter: blur(0);
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes page-exit {
+		to {
+			opacity: 0;
+			filter: blur(2px);
+			transform: scale(0.995);
+		}
+	}
+
+	@keyframes page-enter-back {
+		from {
+			opacity: 0;
+			filter: blur(3px);
+			transform: translateY(-12px) scale(0.995);
+		}
+		to {
+			opacity: 1;
+			filter: blur(0);
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes page-exit-back {
+		to {
+			opacity: 0;
+			filter: blur(2px);
+			transform: scale(0.995);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		::view-transition-old(body),
+		::view-transition-new(body) {
+			animation-duration: 1ms !important;
+		}
+	}
+</style>

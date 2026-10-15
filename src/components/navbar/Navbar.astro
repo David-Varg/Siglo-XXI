@@ -1,0 +1,51 @@
+---
+import { SearchBar } from "@components/navbar/SearchBar"
+---
+
+<header
+	id="journey-nav"
+	inert
+	class="fixed inset-x-0 top-0 z-40 px-4 pt-4 opacity-0 invisible"
+>
+	<nav
+		aria-label="Navegación principal"
+		class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-zinc-950/55 px-4 py-3 shadow-2xl shadow-black/20 backdrop-blur-xl lg:flex-nowrap sm:gap-4 sm:px-6"
+	>
+		<a
+			href="#hero-section"
+			class="type-heading flex items-center gap-3 text-sm text-white sm:text-base"
+		>
+			<span
+				aria-hidden="true"
+				class="grid size-8 place-items-center rounded-xl border border-cyan-300/25 bg-cyan-300/10 text-cyan-200"
+			>
+				XXI
+			</span>
+			<span>
+				El Siglo <span class="text-cyan-200">XXI</span>
+			</span>
+		</a>
+		<div class="journey-nav-links relative isolate flex items-center gap-1 sm:gap-2">
+			<span
+				id="nav-hover-indicator"
+				aria-hidden="true"
+				class="pointer-events-none absolute inset-y-0 left-0 z-0 w-0 rounded-lg bg-white/10 opacity-0"
+			></span>
+			<a
+				href="#timeline-console"
+				class="relative z-10 rounded-lg px-3 py-2 text-xs text-zinc-200 transition-colors hover:text-white focus-visible:text-white sm:text-sm"
+			>
+				Línea de tiempo
+			</a>
+			<a
+				href="#section-team"
+				class="relative z-10 rounded-lg px-3 py-2 text-xs text-zinc-200 transition-colors hover:text-white focus-visible:text-white sm:text-sm"
+			>
+				Equipo
+			</a>
+		</div>
+		<div class="order-3 w-full sm:order-none sm:w-80 lg:w-96">
+			<SearchBar client:load />
+		</div>
+	</nav>
+</header>

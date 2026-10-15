@@ -1,0 +1,46 @@
+---
+import type { BlogContentProps } from "@/types/blog"
+
+const { description, heroImage, model3d, isRetro }: BlogContentProps = Astro.props
+---
+
+<main id="main-content" class="order-1 min-w-0 lg:order-2 lg:col-span-8">
+	<div class="font-body relative">
+		<section class="w-full flex max-sm:flex-col justify-between items-center mb-12 gap-8 p-6 bg-slate-900/50 rounded-2xl border border-white/5 relative overflow-hidden">
+			<div class="absolute inset-0 bg-linear-to-br from-cyan-900/20 to-transparent pointer-events-none"></div>
+
+			<p class="type-body relative z-10 text-xl text-gray-300 max-w-72 text-center mx-auto">
+				{description}
+			</p>
+
+			<div class="relative w-full max-w-xs max-h-xs aspect-square mx-auto group z-10">
+				<div class="absolute -inset-1 bg-linear-to-r from-cyan-500 to-pink-500 rounded-2xl blur opacity-30 group-hover:opacity-75 transition duration-500"></div>
+
+				<div class="relative size-full bg-slate-900 border border-white/10 rounded-2xl overflow-hidden flex items-center justify-center">
+					{model3d ? (
+						<canvas
+							id="hero-three-canvas"
+							data-model={model3d}
+							data-epoch={isRetro ? "retro" : "modern"}
+							class="w-full h-full cursor-grab active:cursor-grabbing"
+						></canvas>
+					) : (
+						<div class="relative size-full">
+							<img
+								src={heroImage}
+								alt="Visualización del hito"
+								class="size-full object-cover rounded-2xl filter brightness-90 contrast-110 group-hover:scale-105 transition-transform duration-500"
+							/>
+							<div class="absolute inset-0 bg-[linear-gradient(to_right,#00000040_1px,transparent_1px)] bg-size-[8px_8px] pointer-events-none"></div>
+						</div>
+					)}
+				</div>
+			</div>
+		</section>
+
+		<article class="prose prose-invert prose-cyan prose-headings:font-title prose-headings:font-bold prose-headings:tracking-tight prose-a:text-cyan-400 prose-blockquote:border-l-cyan-400">
+			<slot />
+		</article>
+	</div>
+</main>
+

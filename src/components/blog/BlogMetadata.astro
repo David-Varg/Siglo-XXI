@@ -1,0 +1,96 @@
+---
+import type { BlogAsideInfoProps } from "@/types/blog"
+
+const {
+	inventor,
+	precededBy,
+	impactScore,
+	category,
+	barColor = "emerald",
+}: BlogAsideInfoProps = Astro.props
+---
+
+<aside id="aside-info" class="order-2 min-w-0 lg:order-1 lg:col-span-4">
+	<div class="space-y-6 relative overflow-hidden rounded-2xl border border-cyan-500/30 bg-slate-900/80 p-4 shadow-[0_0_35px_rgba(6,182,212,0.1)] backdrop-blur-xl sm:p-6 lg:sticky lg:top-8">
+		<div class="absolute -top-12 -right-12 w-24 h-24 bg-cyan-500/20 rounded-full blur-2xl pointer-events-none"></div>
+		<div class="relative inline-flex max-w-full items-center rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 type-label text-[10px] text-cyan-100 sm:text-xs">
+			<span class="mr-2 text-cyan-300">CATEGORÍA</span>
+			<span class="truncate">{category}</span>
+		</div>
+
+		<div>
+			<h3 class="type-label mb-4 flex items-center gap-2 text-[10px] text-cyan-400">
+				<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+				// EXPEDIENTE_INVENTOR
+			</h3>
+			{inventor.map((inv) => (
+				<div class="flex items-center gap-4 mb-3 p-2 rounded-lg bg-slate-800/40 border border-white/5">
+					<div class="size-14 max-sm:size-20 rounded-xl bg-slate-800 border border-cyan-400/40 overflow-hidden shrink-0">
+						<img
+							src={
+								inv.avatar
+									? inv.avatar
+									: "/inventors/default.png"
+							}
+							alt={inv.name}
+							class="w-full h-full object-cover"
+						/>
+					</div>
+					<div>
+						<h4 class="type-heading text-base text-white">
+							{inv.name}
+						</h4>
+						<p class="text-xs text-gray-400">{inv.role}</p>
+					</div>
+				</div>
+			))}
+		</div>
+
+		<div class="p-3 bg-cyan-950/30 border border-cyan-500/20 rounded-xl space-y-1.5">
+			<div class="type-label flex justify-between text-xs">
+				<span class="text-gray-400">NIVEL DE ALTERACIÓN TEMPORAL:</span>
+				<span class="text-cyan-400 font-bold">{impactScore}/10</span>
+			</div>
+			<div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden flex gap-0.5 p-0.5">
+				{Array.from({ length: 10 }).map((_, i) => (
+					<div
+						class={`h-full flex-1 rounded-sm transition-colors ${
+							i < impactScore
+								? `bg-${barColor}-400 shadow-[0_0_8px_${barColor}]`
+								: "bg-slate-700/50"
+						}`}
+					/>
+				))}
+			</div>
+		</div>
+
+		<div class="border-t border-white/10 pt-4">
+			<h5 class="type-label mb-3 text-xs text-cyan-400/80 tracking-wider">
+				// LÍNEA_DE_ANOMALÍAS_PREVIAS
+			</h5>
+			<ul class="space-y-2 font-body text-xs">
+				{precededBy.map((pr) => (
+					<li class="flex items-center gap-2 text-gray-300 p-2 rounded-lg bg-slate-800/20 border border-white/5 hover:border-cyan-500/30 transition-colors">
+						<span class="text-cyan-400 text-xs">◈</span>
+						<span>{pr}</span>
+					</li>
+				))}
+			</ul>
+		</div>
+
+		<div
+			id="aside-interactive-card"
+			class="border border-dashed border-cyan-500/30 rounded-xl p-4 bg-black/40 text-center relative"
+		>
+			<div class="type-label mb-2 text-[10px] text-gray-500">
+				Visor de Artefacto Recuperado
+			</div>
+			<div class="h-32 w-full flex items-center justify-center relative overflow-hidden rounded-lg bg-slate-950">
+				<div class="absolute inset-0 bg-[radial-gradient(#22d3ee_1px,transparent_1px)] [background-size:12px_12px] opacity-20"></div>
+				<div class="w-16 h-16 border-2 border-cyan-400/60 rounded-full animate-[spin_8s_linear_infinite] flex items-center justify-center border-t-transparent">
+					<div class="w-10 h-10 border border-dashed border-pink-500 rounded-full animate-ping opacity-50"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</aside>
