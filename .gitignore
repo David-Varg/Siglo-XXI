@@ -3,7 +3,6 @@ tests.astro
 .vscode/
 
 # Agents instructions
-AGENTS.md
 CLAUDE.md
 
 # build output

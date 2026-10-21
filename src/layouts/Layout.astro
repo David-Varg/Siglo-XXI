@@ -26,17 +26,35 @@ const pageTransition = {
 import { AudioPlayer } from "@components/shared/AudioPlayer"
 
 // Typo para Tailwind
-const { title }: LayoutProps = Astro.props
+const { title, description, ogImage, ogImageAlt, ogType }: LayoutProps = Astro.props
+const currentUrl = Astro.url
+
+let currentLocale = "es_CO"
 ---
 
 <html lang="es" transition:animate="none">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="/icon.svg" />
 		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<ClientRouter />
+
 		<title>{ title }</title>
+		<meta name="description" content={ description } />
+
+		<!-- Etiquetas Open Graph para SEO -->
+		<meta property="og:title" content={`${title} - Blog educativo e informativo sobre hitos históricos`} />
+		<meta property="og:description" content={description ?? "Sitio educativo e informativo sobre hitos históricos y tecnológicos, presentado como un blog interactivo, mostrando los momentos más importantes de los últimos 2 siglos que aportaron a los avances tecnológicos humanos en la actualidad."} />
+		<meta property="og:url" content={ currentUrl } />
+		<meta property="og:image" content={ ogImage ?? "/defaultBanner.png" } />
+		<meta property="og:type" content={ ogType } />
+		<meta property="og:image:alt" content={ ogImageAlt ?? "Imagen del banner" } />
+
+		<!-- Open Graph para idioma -->
+		<meta property="og:locale" content="es_419" />
+
+		<ClientRouter />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="robots" content="index, follow" />
+		<link rel="icon" href="/icon.svg" />
 	</head>
 	<body
 		class="bg-zinc-950 text-white w-screen min-h-screen overflow-x-hidden"
