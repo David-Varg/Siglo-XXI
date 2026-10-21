@@ -1,5 +1,6 @@
+// No usé una librería aquí por practicar
 import type { SearchItem, SearchSuggestion } from "@/types/search"
-import stopwordsData from "../data/stopwords.json" with { type: "json" }
+import stopwordsData from "@/data/stopwords.json" with { type: "json" }
 
 export type { SearchItem, SearchSuggestion } from "@/types/search"
 
@@ -19,14 +20,20 @@ const tokenizeForIndexing = (value: string): string[] => {
 }
 
 const tokenizeForQuery = (value: string): string[] => {
-	const rawTokens = normalize(value)
+  const trimmedValue = value.trimEnd()
+	if (trimmedValue.length === 0) return []
+  
+	const rawTokens = normalize(trimmedValue)
 		.replace(/[^\w\s]/g, " ")
 		.split(/\s+/)
 		.filter((word) => word.length > 0)
 
 	if (rawTokens.length === 0) return []
 
-	return rawTokens.filter((word) => !STOP_WORDS.has(word))
+	return rawTokens.filter(
+			(word, index) =>
+				index === rawTokens.length - 1 || !STOP_WORDS.has(word),
+		)
 }
 
 class NodoTrie {
@@ -75,7 +82,8 @@ class TrieBusqueda {
 		if (erroresRestantes < 0) return
 
 		if (i === texto.length) {
-			nodosEncontrados.add(nodo)
+      nodosEncontrados.add(nodo)
+			this.excavarNodosRecursivo(nodo, nodosEncontrados)
 			return
 		}
 
@@ -125,6 +133,14 @@ class TrieBusqueda {
 
 		for (const char in nodo.hijos)
 			this.excavarPalabras(nodo.hijos[char], resultados)
+  }
+
+  private excavarNodosRecursivo(nodo: NodoTrie, nodosEncontrados: Set<NodoTrie>) {
+		for (const char in nodo.hijos) {
+			const hijo = nodo.hijos[char]
+			nodosEncontrados.add(hijo)
+			this.excavarNodosRecursivo(hijo, nodosEncontrados)
+		}
 	}
 
 	private buscarToken(

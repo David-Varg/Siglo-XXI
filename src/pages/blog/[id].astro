@@ -68,7 +68,7 @@ const epochConfig = isRetroEpoch
 		}
 ---
 
-<LayoutOfPages title={title}>
+<LayoutOfPages title={title} description={description} ogImage={heroImage} ogImageAlt={title} ogType="article" >
 	<div class={`${epochTheme} min-h-screen relative`}>
 		<article
 			class="relative z-10 min-h-screen max-w-7xl mx-auto px-4 py-12"
@@ -121,7 +121,7 @@ const epochConfig = isRetroEpoch
 				href={`/blog/${nextBlogId}`}
 				class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/20"
 			>
-				Cargar siguiente hito
+				Siguiente
 				<svg
 					class="w-4 h-4"
 					fill="none"

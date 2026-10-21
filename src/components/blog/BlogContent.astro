@@ -28,8 +28,9 @@ const { description, heroImage, model3d, isRetro }: BlogContentProps = Astro.pro
 						<div class="relative size-full">
 							<img
 								src={heroImage}
-								alt="Visualización del hito"
-								class="size-full object-cover rounded-2xl filter brightness-90 contrast-110 group-hover:scale-105 transition-transform duration-500"
+								alt="Imagen demostrativa del hito o evento más destacado de este año y/o categoría"
+								loading="lazy"
+								class="[view-transition-name:img-portada] size-full object-cover rounded-2xl filter brightness-90 contrast-110 group-hover:scale-105 transition-transform duration-500"
 							/>
 							<div class="absolute inset-0 bg-[linear-gradient(to_right,#00000040_1px,transparent_1px)] bg-size-[8px_8px] pointer-events-none"></div>
 						</div>

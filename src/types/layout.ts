@@ -1,3 +1,7 @@
 export interface LayoutProps {
-	title: string
+  title: string
+  description?: string
+  ogImage?: string
+  ogImageAlt?: string
+  ogType?: 'website' | 'article'
 }

@@ -30,41 +30,49 @@ document.addEventListener("astro:page-load", () => {
 			.from(
 				"#main-content",
 				{
-					y: 30,
+          y: 30,
 					autoAlpha: 0,
-					duration: 0.8,
-				},
+        },
 				"<0.1",
 			)
 
 		const articleElements = gsap.utils.toArray<HTMLElement>(
-			"#main-content :is(h2, h3, p, img, blockquote, ul, ol)",
-		)
+			"#main-content :is(h2, h3, strong, p, img, blockquote, ul, ol) ",
+    )
+
+		gsap.set(articleElements, { y: 100, autoAlpha: 0 })
 
 		ScrollTrigger.batch(articleElements, {
-			start: "top 90%",
+			start: "top 95%",
 			once: false,
 			onEnter: (batch) => {
 				gsap.fromTo(
 					batch,
-					{ y: 45, autoAlpha: 0 },
+					{ y: 50, autoAlpha: 0 },
 					{
 						y: 0,
-						autoAlpha: 1,
-						duration: 0.9,
-						stagger: 0.15,
+            autoAlpha: 1,
+						stagger: 0.1,
 						ease: "power2.out",
 					},
 				)
 			},
 			onLeaveBack: (batch) => {
 				gsap.to(batch, {
-					y: 45,
+					y: 50,
 					autoAlpha: 0,
 					duration: 0.4,
 				})
-			},
-		})
+      },
+      onEnterBack: (batch) => {
+        gsap.fromTo(batch, { y: -50, autoAlpha: 0 }, {
+            y: 0, autoAlpha: 1, stagger: 0.1, ease: "power2.out"
+        });
+      },
+      onLeave: (batch) => {
+        gsap.to(batch, { y: -50, autoAlpha: 0, duration: 0.4 });
+      },
+    })
 
 		const nextTrigger = document.getElementById("next-post-trigger")
 		if (nextTrigger)
@@ -74,7 +82,7 @@ document.addEventListener("astro:page-load", () => {
 				onEnter: () => {
 					gsap.fromTo(
 						nextTrigger,
-						{ scale: 0.95, autoAlpha: 0.7 },
+						{ scale: 0.70, autoAlpha: 0.7 },
 						{
 							scale: 1,
 							autoAlpha: 1,
@@ -85,6 +93,10 @@ document.addEventListener("astro:page-load", () => {
 				},
 			})
 	})
+})
+
+window.addEventListener("load", () => {
+  ScrollTrigger.refresh()
 })
 
 document.addEventListener("astro:before-swap", () => {
