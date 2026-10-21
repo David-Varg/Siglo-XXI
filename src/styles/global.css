@@ -15,6 +15,8 @@
 	--animate-capsule-idle: capsule-idle 10s linear infinite;
 	--animate-ring-spin: ring-spin 18s linear infinite;
 	--animate-core-pulse: core-pulse 4s ease-in-out infinite;
+	--animate-shake: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97)
+		both;
 
 	@keyframes capsule-idle {
 		0%,
@@ -84,15 +86,42 @@
 	}
 
 	@keyframes circular-carousel-leave {
-		from { opacity: 1; }
-		to { opacity: 0; }
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
 	}
 
 	@keyframes circular-carousel-reveal {
-		from { opacity: 0; }
-		to { opacity: 1; }
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 
+	@keyframes shake {
+		10%,
+		90% {
+			transform: translate3d(-1px, 0, 0);
+		}
+		20%,
+		80% {
+			transform: translate3d(2px, 0, 0);
+		}
+		30%,
+		50%,
+		70% {
+			transform: translate3d(-4px, 0, 0);
+		}
+		40%,
+		60% {
+			transform: translate3d(4px, 0, 0);
+		}
+	}
 }
 
 @utility type-display {
@@ -138,7 +167,7 @@ main {
 
 @theme inline {
 	--font-heading: var(--font-sans);
-	--font-sans: 'Geist Variable', sans-serif;
+	--font-sans: "Geist Variable", sans-serif;
 	--color-sidebar-ring: var(--sidebar-ring);
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -249,13 +278,13 @@ main {
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+	* {
+		@apply border-border outline-ring/50;
 	}
-  body {
-    @apply bg-background text-foreground;
+	body {
+		@apply bg-background text-foreground;
 	}
-  html {
-    @apply font-sans;
+	html {
+		@apply font-sans;
 	}
 }

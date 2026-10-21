@@ -1200,7 +1200,8 @@ export const CircularCarousel = ({
 						<img
 							className="pointer-events-none absolute block max-w-none select-none object-cover [-webkit-user-drag:none]"
 							src={item.src}
-							alt=""
+              alt=""
+							loading="lazy"
 							draggable={false}
 							decoding="async"
 							onError={() => {
@@ -1219,7 +1220,8 @@ export const CircularCarousel = ({
 							key={`leaving-${leaving.id}`}
 							className=" pointer-events-none absolute block max-w-none select-none object-cover [-webkit-user-drag:none] animate-[circular-carousel-leave_700ms_cubic-bezier(0.33,1,0.68,1)_both]"
 							src={gone.src}
-							alt=""
+              alt=""
+              loading="lazy"
 							draggable={false}
 							decoding="async"
 							onError={() => {
@@ -1334,7 +1336,7 @@ export const CircularCarousel = ({
 					>
 						{current.title || current.alt}
 						{current.subtitle && (
-							<span className="type-body text-[15px] opacity-60">
+							<span className="type-body text-[15px] max-sm:text-[13px] opacity-60">
 								{current.subtitle}
 							</span>
 						)}
@@ -1375,8 +1377,10 @@ export const CircularCarousel = ({
 									selectedImageFailed ||
 									unavailableImages.has(selectedItem.src)
 										? "hidden"
-										: "max-h-[55dvh] h-[50vh] w-full object-contain"
+										: "[view-transition-name:img-portada] max-h-[55dvh] h-[50vh] w-full object-contain"
 								}
+								width="100%"
+								height="50vh"
 								decoding="async"
 								onError={() => setSelectedImageFailed(true)}
 							/>
@@ -1420,7 +1424,6 @@ export const CircularCarousel = ({
 							{selectedItem.url && (
 								<a
 									href={selectedItem.url}
-									target="_blank"
 									className="type-label mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-cyan-300/30 bg-cyan-300/10 px-5 py-3 text-xs text-cyan-100 transition-colors hover:border-cyan-200/60 hover:bg-cyan-300/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
 								>
 									Leer artículo
