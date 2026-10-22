@@ -4,8 +4,6 @@ Proyecto académico desarrollado para la asignatura **Introducción a la Ingenie
 
 La aplicación presenta hitos históricos, sus inventores y el impacto que han tenido en la sociedad. La propuesta combina una Arquitectura de tipo MPA buscando una experiencia de usuario estilo SPA gracias a las View Transitions de Astro; contenido editorial con una experiencia visual interactiva: un recorrido espacial en 3D, una línea de tiempo, búsqueda de artículos y una sección dedicada al equipo.
 
-> Nota: El sitio y su estructura están desarrollados. La selección y redacción de los artículos, junto con varias imágenes y modelos asociados a los inventos, se incorporarán cuando el equipo de investigación y contenido los entregue.
-
 ## Qué incluye
 
 - **Hero 3D:** escena de la Voyager y Saturno, con cámara y viaje coordinados con el scroll.
